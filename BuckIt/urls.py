@@ -18,3 +18,7 @@ urlpatterns = patterns('BuckIt.home.views',
     url(r'^login/$', 'login'),
     url(r'^home/$', 'home'),
 )
+
+urlpatterns += patterns('BuckIt.BuckItList.views',
+    url(r'^list/(?P<title>\w+)/$', 'list'),
+    )
