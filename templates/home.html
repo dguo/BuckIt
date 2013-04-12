@@ -2,29 +2,83 @@
 
 {% block titleExtra %} | Home {% endblock %}
 
+{% block scriptfn %}
+    <script type="text/javascript"> jQuery(".tagManager").tagsManager({
+        preventSubmitOnEnter: true,
+        typeahead: true,
+        typeaheadSource: ["Princeton", "Family", "Friends"],
+        blinkBGColor_1: '#FFFF9C',
+        blinkBGColor_2: '#CDE69C',
+    });</script>
+{% endblock %}
+
 {% block grayBlock %}
         <div class="page-title">
             <div class="container">
-                <div class="row">
-                    <div class="span12 buckit_blue">
-                        <i class="icon-user page-title-icon"></i>
-                        <h2>Home /</h2>
-                        <p>Below you can find more information about our company</p>
-                    </div>
+                <div class="row buckit_blue">
+                        <h1 class="span1"><i class="icon-user page-title-icon"></i></h1>
+                        <h1 class="span5">{{ name }} Molly Nacey</h1>
                 </div>
             </div>
         </div>
 {% endblock %}
 
 {% block Content %}
-    <div class="container">
-        <div class="row">
-                <div class="services-half-width-text span7">
-                    <h4>Lorem Ipsum</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper <span class="violet">suscipit lobortis</span> nisl ut aliquip ex ea commodo consequat. Lorem ipsum <strong>dolor sit amet</strong>, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do <strong>eiusmod tempor</strong> incididunt.</p>
+<div class="container">
+    <div class="row">
+        <div class="span7">
+            <div class="row">
+                <h2>My BuckIt List</h2>
+            </div>
+            <div class="row">
+                <div class="add-task">
+                    <div class="task-form">
+                        <form class="form-inline" method="post" action="">
+                            <input id="name" type="text" name="task" placeholder="Add a new task..."/>
+                            <input type="text" name="task" placeholder="Add tags..." class="tagManager"/>
+                            <button type="submit"> + </button>
+                        </form>
+                    </div>
                 </div>
-
-            <div class="newsfeed span4 offset1">
+            </div>
+            <div class="row">
+                <table class="table">
+                    <tr><td><input type="checkbox" value="option2" id="taskcheck"></td>
+                    <td>{{task}} Go to Hoagie Haven</td>
+                    <td>{{date_set}} May 3, 2012</td>
+                    <td>{{date_done}} - </td>
+                    <td>{{tag}} #Princeton </td>
+                </tr>
+                    <tr><td><input type="checkbox" value="option2" id="taskcheck"></td>
+                    <td>{{task}} Prospect 11</td>
+                    <td>{{date_set}} June 14, 2012</td>
+                    <td>{{date_done}} September 8, 2013 </td>
+                    <td>{{tag}} #Friends</td>
+                </tr>
+            </table>
+            </div>
+        </div>
+        <div class="offset1 span4">
+            <div class="container">
+                <div class="row">
+                    <h4>Recommended Task:</h4>
+                </div>
+                <div class="row">
+                    <div class="rec span1">
+                        <p><a>Visit all 50 states</a></p>
+                    </div>
+                    <div class="rec span1">
+                        <p><a>Go to every Starbucks</a></p>
+                    </div>
+                    <div class="rec span1">
+                        <p><a>Graduate from Princeton</a></p>
+                    </div>
+                    <div class="rec span1">
+                        <p><a>Get a job</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="newsfeed">
                 <div class ="row">
                     <div class ="news">
                         <h4>News Feed</h4>
@@ -32,11 +86,25 @@
                 </div>
                 <div class="row">
                     <div class="news">
-                            <div><img src="static/img/portfolio/work1.jpg" alt=""></div>
-                            <p>March 6, 2013<br> Molly Nacey Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et...</p>
+                            <img src="static/img/portfolio/work1.jpg" alt="">
+                            <p>May 3, 2012<br> Molly Nacey added Go to Hoagie Haven</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="news">
+                            <img src="static/img/portfolio/work1.jpg" alt="">
+                            <p>March 6, 2013<br> Molly Nacey Lorem ipsum dolor sit amet, consectetur.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="news">
+                            <img src="static/img/portfolio/work1.jpg" alt="">
+                            <p>March 6, 2013<br> Molly Nacey Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

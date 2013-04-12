@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="/static/css/flexslider.css">
         <link rel="stylesheet" href="/static/css/font-awesome.css">
         <link rel="stylesheet" href="/static/css/style.css">
+        <link rel="stylesheet" href="/static/css/bootstrap-tagmanager.css">
 
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -40,9 +41,9 @@
         <script src="/static/js/jquery.quicksand.js"></script>
         <script src="/static/prettyPhoto/js/jquery.prettyPhoto.js"></script>
         <script src="/static/js/scripts.js"></script>
+        <script src="/static/js/bootstrap-tagmanager.js"></script>
 
         {% block jsSources %}{% endblock %}
-        {% block scriptfn %}{% endblock %}
 
     </head>
 
@@ -62,6 +63,11 @@
                             <h1>
                                 <a class="brand" href="\home\"></a>
                             </h1>
+                            <div class="container span1">
+                            <h1>
+                                <a class="taskbutton" href="/home/"><i class="icon-check"></i></a>
+                            </h1>
+                        </div>
                             <div class="nav-collapse collapse">
                                 <ul class="nav pull-right">
                                     </li>
@@ -69,7 +75,7 @@
                                         <a href="/home/"><i class="icon-home"></i><br />Home</a>
                                     </li>
                                     <li>
-                                        <a href="about.html"><i class="icon-user"></i><br />Profile</a>
+                                        <a href="/profile/Molly/"><i class="icon-user"></i><br />Profile</a>
                                     </li>
                                     <li>
                                         <a href="/login/"><i class="icon-road"></i><br />log out</a>
@@ -104,6 +110,8 @@
             </div>
         </footer>
 
+        {% block scriptfn %}{% endblock %}
+    
     </body>
 
 </html>

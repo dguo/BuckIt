@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block titleExtra %} | Profile {% endblock %}
+
+<!-- Gray Block -->
+{% block grayBlock %}
+<div class="page-title">
+    <div class="container">
+        <div class="row buckit_blue">
+            <h1 class="span1"><i class="icon-user page-title-icon"></i></h1>
+            <h1 class="span5">{{ name }} Molly Nacey</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Content -->
+{% block Content %}
+<div class="container profile">
+	<div class="row">
+		<a href="">Newsfeed</a>
+		<a href="#">List</a>
+		<a href="">Badges</a>
+	</div>
+</div>
+<div class="container">
+ <div class="row">
+        <div class="span10 offset1">
+            <div class="row">
+                <h2>My BuckIt List</h2>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <td>{{task}} Go to Hoagie Haven</td>
+                    <td>{{date_set}} May 3, 2012</td>
+                    <td>{{date_done}} - </td>
+                    <td>{{tag}} #Princeton </td>
+                    <td><button type="submit"> + </button></td>
+                </tr>
+                    <td>{{task}} Prospect 11</td>
+                    <td>{{date_set}} June 14, 2012</td>
+                    <td>{{date_done}} September 8, 2013 </td>
+                    <td>{{tag}} #Friends</td>
+                    <td><button type="submit"> + </button></td>
+                </tr>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
