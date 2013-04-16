@@ -4,7 +4,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('BuckIt.home.views',
+urlpatterns = patterns('BuckIt.buckitapp.views',
     # Examples:
     # url(r'^$', 'BuckIt.views.home', name='home'),
     # url(r'^BuckIt/', include('BuckIt.foo.urls')),

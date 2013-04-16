@@ -2,10 +2,11 @@
 
 {% block titleExtra %} | Home {% endblock %}
 
-{% block scriptfn %}
+{% block bodyscripts %}
     <script type="text/javascript"> jQuery(".tagManager").tagsManager({
         preventSubmitOnEnter: true,
         typeahead: true,
+        typeaheadAjaxSource: null,
         typeaheadSource: ["Princeton", "Family", "Friends"],
         blinkBGColor_1: '#FFFF9C',
         blinkBGColor_2: '#CDE69C',

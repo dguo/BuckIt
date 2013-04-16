@@ -2,6 +2,62 @@
 
 {% block titleExtra %} | Login {% endblock %}
 
+{% block bodyscripts %}
+<script>
+  window.fbAsyncInit = function() {
+    // init the FB JS SDK
+    FB.init({
+      appId      : '480528945353541',                    // App ID from the app dashboard
+      status     : true,                                 // Check Facebook Login status
+      cookie     : true,                 // Enable cookies to allow the server to access the session
+      xfbml      : true                                  // Look for social plugins on the page
+    });
+    
+    FB.getLoginStatus(function(response) {
+       if (response.status === 'connected') {
+       // connected
+       testAPI();
+       } else if (response.status === 'not_authorized') {
+       // not_authorized
+       login();
+       } else {
+       // not_logged_in
+       login();
+       }
+    });  
+  };
+  
+  function login() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+            // connected
+            testAPI();
+        } else {
+            // cancelled
+        }
+    });
+  }
+  
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+        console.log('Good to see you, ' + response.name + '.');
+    });
+  }
+  
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+  
+</script>
+
+{% endblock %}
+
 {% block grayBlock %}
         <div class="slider">
             <div class="container">
@@ -41,9 +97,9 @@
                         <i class="icon-facebook-sign"></i>
                     </div>
                     <h4>Login</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et...</p>
-                    <a href="services.html">Read more</a>
+                    <div id="fb-root"></div>
                 </div>
             </div>
         </div>
+        <div class="fb-like" data-send="true" data-width="450" data-show-faces="true" /></div>
 {% endblock %}
