@@ -16,9 +16,9 @@ class Task(models.Model):
 
 class User(models.Model):
 	name = models.CharField(max_length=40)
-	#friends = models.ManyToManyField(User)
-	#tasks = models.ManyToManyField(Task, through="Ownership")
-	tasks = models.ManyToManyField(Task)
+	password = models.CharField(max_length=40)
+	friends = models.ManyToManyField("self", null=True, blank=True)
+	tasks = models.ManyToManyField(Task, through="Ownership")
 	def __unicode__(self):
 		return self.name
 
@@ -26,5 +26,7 @@ class Ownership(models.Model):
 	user = models.ForeignKey(User)
 	task = models.ForeignKey(Task)
 	completed = models.BooleanField(default=False)
-	start_time = models.DateTimeField()
-	complete_time = models.DateTimeField()
+	date_set = models.DateTimeField(auto_now_add=True)
+	date_done = models.DateTimeField(null=True, blank=True)
+	def __unicode__(self):
+		return self.user.name + " : " + self.task.task_text
