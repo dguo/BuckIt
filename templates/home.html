@@ -3,7 +3,8 @@
 {% block titleExtra %} | Home {% endblock %}
 
 {% block bodyscripts %}
-    <script type="text/javascript"> jQuery(".tagManager").tagsManager({
+    <script type="text/javascript"> 
+    jQuery(".tagManager").tagsManager({
         preventSubmitOnEnter: true,
         typeahead: true,
         typeaheadAjaxSource: null,
@@ -14,14 +15,14 @@
 {% endblock %}
 
 {% block grayBlock %}
-        <div class="page-title">
-            <div class="container">
-                <div class="row buckit_blue">
-                        <h1 class="span1"><i class="icon-user page-title-icon"></i></h1>
-                        <h1 class="span5">{{ name }} Molly Nacey</h1>
-                </div>
+    <div class="page-title">
+        <div class="container">
+            <div class="row buckit_blue">
+                    <h1 class="span1"><i class="icon-user page-title-icon"></i></h1>
+                    <h1 class="span5">{{ name }} Molly Nacey</h1>
             </div>
         </div>
+    </div>
 {% endblock %}
 
 {% block Content %}
@@ -34,37 +35,36 @@
             <div class="row">
                 <div class="add-task">
                     <div class="task-form">
-                        <form class="form-inline" method="post" action="">
+                        <form class="form-inline" method="post" action=".">{% csrf_token %}
                             <input id="name" type="text" name="task" placeholder="Add a new task..."/>
-                            <input type="text" name="task" placeholder="Add tags..." class="tagManager"/>
-                            <button type="submit"> + </button>
+                            <input type="text" name="tags" placeholder="Add tags..." class="tagManager"/>
+                            <button type="submit" name="addTask"> + </button>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="row">
+
                 <table class="table">
+                {% for task in tasks %}
                     <tr><td><input type="checkbox" value="option2" id="taskcheck"></td>
-                    <td>{{task}} Go to Hoagie Haven</td>
-                    <td>{{date_set}} May 3, 2012</td>
-                    <td>{{date_done}} - </td>
-                    <td>{{tag}} #Princeton </td>
+                    <td>{{task.task_text}}</td>
+                    <td>{{task.date_set}}</td>
+                    
+                    <td>{{task.date_done}}</td>
+                    {% for tag in task.tags.all %}
+                        #{{tag.tag_text}}
+                    {% endfor %}
                 </tr>
-                    <tr><td><input type="checkbox" value="option2" id="taskcheck"></td>
-                    <td>{{task}} Prospect 11</td>
-                    <td>{{date_set}} June 14, 2012</td>
-                    <td>{{date_done}} September 8, 2013 </td>
-                    <td>{{tag}} #Friends</td>
-                </tr>
+                {% endfor %}
             </table>
             </div>
         </div>
-        <div class="offset1 span4">
-            <div class="container">
-                <div class="row">
+        <div class="container offset1 span4">
+                <div class="row  rec_title">
                     <h4>Recommended Task:</h4>
                 </div>
-                <div class="row">
+                <div class="row rec_title">
                     <div class="rec span1">
                         <p><a>Visit all 50 states</a></p>
                     </div>
@@ -78,32 +78,24 @@
                         <p><a>Get a job</a></p>
                     </div>
                 </div>
-            </div>
             <div class="newsfeed">
                 <div class ="row">
                     <div class ="news">
                         <h4>News Feed</h4>
                     </div>
                 </div>
+                {% for event in newsevents%}
                 <div class="row">
                     <div class="news">
                             <img src="static/img/portfolio/work1.jpg" alt="">
-                            <p>May 3, 2012<br> Molly Nacey added Go to Hoagie Haven</p>
+                            {% if event.isCompleted %}
+                                <p>{{event.complete_date}}<br>{{event.user}} completed {{event.event}}</p>
+                            {% else %}
+                                <p>{{event.complete_date}}<br>{{event.user}} completed {{event.event}}</p>
+                            {% endif %}
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="news">
-                            <img src="static/img/portfolio/work1.jpg" alt="">
-                            <p>March 6, 2013<br> Molly Nacey Lorem ipsum dolor sit amet, consectetur.</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="news">
-                            <img src="static/img/portfolio/work1.jpg" alt="">
-                            <p>March 6, 2013<br> Molly Nacey Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

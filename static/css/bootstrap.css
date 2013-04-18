@@ -2009,6 +2009,9 @@ table {
   margin-bottom: 20px;
 }
 
+.tableTitle {
+  border-top: none;
+}
 .table th,
 .table td {
   padding: 8px;

@@ -11,6 +11,7 @@ class Tag(models.Model):
 class Task(models.Model):
 	task_text = models.CharField(max_length=140)
 	tags = models.ManyToManyField(Tag)
+	count = models.IntegerField(default=1)
 	def __unicode__(self):
 		return self.task_text
 

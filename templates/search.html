@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block titleExtra %} | Search {% endblock %}
+
+{% block grayBlock %}
+<div class="page-title">
+	<div class="container">
+		<div class="row">
+			<div class="add-task">
+				<div class="task-form">
+					<form class="form-inline" method="POST" action=".">{% csrf_token %}
+						<input id="name" type="text" name="tagQuery" placeholder="Search tasks by tags..."/>
+						<button type="submit" name="searchTag"> <i class="icon-search"></i> </button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block Content %}
+<div class="container profile">
+    <div class="span10 offset1">
+        <div class="row">
+            <table class="table">
+                <tr class="tableTitle">
+                    <td class="tableTitle">Task</td>
+                    <td>Add Counts</td>
+                    <td>Tags</td>
+                </tr>
+                <tr>
+                 {% for task in tasks %}
+                 <td>{{task.task_text}}</td>
+                 <td>{{task.count}}</td>
+                 <td>
+                    {% for tag in task.tags.all %}
+                    #{{tag.tag_text}}</br>
+                    {% endfor %}</td>
+                    <td><button type="submit"> + </button></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

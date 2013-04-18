@@ -19,3 +19,16 @@ def profile(request, userid):
 	    {'owns': owns}, 
 		context_instance = RequestContext(request))
 
+def search(request):
+	if request.method == 'POST':
+		tagname = request.POST['tagQuery']
+		try:
+			tag = Tag.objects.get(tag_text=tagname)
+			tasks = Task.objects.filter(tags=tag)
+		except Tag.DoesNotExist:
+			tasks = None
+	else:
+		tasks = Task.objects.all()
+	return render_to_response('search.html',
+		{'tasks': tasks}, context_instance=RequestContext(request))
+

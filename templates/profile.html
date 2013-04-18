@@ -51,41 +51,46 @@ $(document).ready(function() {
 	</div>
 </div>
 <div id="listcontainer" class="container" style="">
-   <div class="row">
-    <div class="span10 offset1">
-        <div class="row">
-            <h2>My BuckIt List</h2>
+    <div class="row">
+        <div class="span10 offset1">
+            <div class="row">
+                <h2>My BuckIt List</h2>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <tr class="tableTitle">
+                        <td class="tableTitle">Task</td>
+                        <td>Day Added</td>
+                        <td>Day Completed</td>
+                        <td>Tags</td>
+                    </tr>
+                    <tr>
+                       {% for own in owns %}
+                       <td>{{own.task.task_text}}</td>
+                       <td>{{own.date_set}}</td>
+                       {% if own.completed %}
+                       <td>{{own.date_done}}</td>
+                       {% else %}
+                       <td></td>
+                       {% endif %}
+                       <td>
+                        {% for tag in own.task.tags.all %}
+                        #{{tag.tag_text}}</br>
+                        {% endfor %}</td>
+                        <td><button type="submit"> + </button></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
-        <div class="row">
-            <table class="table">
-            	<td>{{task}} Task</td>
-                <td>{{date_set}} Date Added</td>
-                <td>{{date_done}} Date Completed </td>
-                <td>{{tag}} Tags </td>
-                <td>Add Task</td>
-            </tr>
-                <td>{{task}} Go to Hoagie Haven</td>
-                <td>{{date_set}} May 3, 2012</td>
-                <td>{{date_done}} - </td>
-                <td>{{tag}} #Princeton </td>
-                <td><button type="submit"> + </button></td>
-            </tr>
-            <td>{{task}} Prospect 11</td>
-            <td>{{date_set}} June 14, 2012</td>
-            <td>{{date_done}} September 8, 2013 </td>
-            <td>{{tag}} #Friends</td>
-            <td><button type="submit"> + </button></td>
-        </tr>
-    </table>
+    </div>
 </div>
-</div>
-</div>
-</div>
+
 <div id="newscontainer" class="container">
    <div class="row">
     <div class="span10 offset1">
         <div class="row">
-                        <div class="newsfeed">
+            <div class="newsfeed">
                 <div class ="row">
                     <div class ="news">
                         <h4>News Feed</h4>
@@ -93,21 +98,21 @@ $(document).ready(function() {
                 </div>
                 <div class="row">
                     <div class="news">
-                            <img src="static/img/portfolio/work1.jpg" alt="">
-                            <p>May 3, 2012<br> Molly Nacey added "Go to Hoagie Haven"</p>
+                        <img src="static/img/portfolio/work1.jpg" alt="">
+                        <p>May 3, 2012<br> Molly Nacey added "Go to Hoagie Haven"</p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="news">
-                            <img src="static/img/portfolio/work1.jpg" alt="">
-                            <p>March 6, 2013<br> Molly Nacey completed "Enroll in COS 333"</p>
+                        <img src="static/img/portfolio/work1.jpg" alt="">
+                        <p>March 6, 2013<br> Molly Nacey completed "Enroll in COS 333"</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="news">
-                            <img src="static/img/portfolio/work1.jpg" alt="">
-                            <p>March 6, 2013<br> Molly Nacey completed "Join BuckIt"</p>
+                        <img src="static/img/portfolio/work1.jpg" alt="">
+                        <p>March 6, 2013<br> Molly Nacey completed "Join BuckIt"</p>
                     </div>
                 </div>
             </div>
@@ -116,7 +121,7 @@ $(document).ready(function() {
 </div>
 </div>
 <div id="badgecontainer" class="container">
-   <div class="row">
+ <div class="row">
     <div class="span10 offset1">
         <div class="row">
             <p>badges!!zomg!</p>
