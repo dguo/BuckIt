@@ -35,6 +35,11 @@ strong { font-weight: bold; }
 
 /* ----- Header ----- */
 
+#writeButton {
+    line-height: 97px;
+    vertical-align: middle;
+}
+
 .header .navbar {
     margin-bottom: 0;
 }
@@ -219,13 +224,16 @@ strong { font-weight: bold; }
 
 .rec {
     background-color: #2c6bff;
-    height: 75px;
-    vertical-align: middle;
+    width: 70px;
+    height: 70px;
     display: inline;
+    margin: 10px;
+    padding: 5px;
 }
 
-.rec a {
+a .rec{
     color: white;
+    vertical-align: middle;
 }
 /* ----- Newsfeed -----*/
 
@@ -903,7 +911,28 @@ footer .social a:hover { background-position: left top; }
     height: 160px;
 }
 
-.add-task form button {
+.login {
+    background: #2c6bff;
+    border: 0;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: #fff;
+    -moz-box-shadow:
+        0 1px 25px 0 rgba(0,0,0,.05) inset,
+        0 -1px 25px 0 rgba(0,0,0,.05) inset;
+    -webkit-box-shadow:
+        0 1px 25px 0 rgba(0,0,0,.05) inset,
+        0 -1px 25px 0 rgba(0,0,0,.05) inset;
+    box-shadow:
+        0 1px 25px 0 rgba(0,0,0,.05) inset,
+        0 -1px 25px 0 rgba(0,0,0,.05) inset;
+    -o-transition: all .3s;
+    -moz-transition: all .3s;
+    -webkit-transition: all .3s;
+    -ms-transition: all .3s;
+}
+
+.add-task form button, {
     width: 32px;
     height: 32px;
     background: #2c6bff;
@@ -926,13 +955,13 @@ footer .social a:hover { background-position: left top; }
     -ms-transition: all .3s;
 }
 
-.add-task form button:hover {
+.add-task form button:hover, .login {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
 
-.add-task form button:active {
+.add-task form button:active, .login {
     -moz-box-shadow:
         0 5px 10px 0 rgba(0,0,0,.15) inset,
         0 -1px 25px 0 rgba(0,0,0,.05) inset;
@@ -1072,13 +1101,13 @@ footer .social a:hover { background-position: left top; }
         0 -1px 25px 0 rgba(0,0,0,.05) inset;
 }
 
-.call-to-action-text .ca-button a:hover {
+.call-to-action-text .ca-button a:hover, .rec_title a:hover {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
 
-.call-to-action-text .ca-button a:active {
+.call-to-action-text .ca-button a:active, .rec_title a:active {
     -moz-box-shadow:
         0 5px 10px 0 rgba(0,0,0,.15) inset,
         0 -1px 25px 0 rgba(0,0,0,.05) inset;

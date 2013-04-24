@@ -28,14 +28,14 @@
 {% block Content %}
 <div class="container">
     <div class="row">
-        <div class="span7">
+        <div class="span7"> 
             <div class="row">
                 <h2>My BuckIt List</h2>
             </div>
             <div class="row">
                 <div class="add-task">
                     <div class="task-form">
-                        <form class="form-inline" method="post" action=".">{% csrf_token %}
+                        <form name="taskform" class="form-inline" method="post" action=".">{% csrf_token %}
                             <input id="name" type="text" name="task" placeholder="Add a new task..."/>
                             <input type="text" name="tags" placeholder="Add tags..." class="tagManager"/>
                             <button type="submit" name="addTask"> + </button>
@@ -43,6 +43,9 @@
                     </div>
                 </div>
             </div>
+            <script type="text/javascript">
+            document.forms['taskform'].elements['task'].focus();
+            </script>
             <div class="row">
 
                 <table class="table">
@@ -62,21 +65,21 @@
         </div>
         <div class="container offset1 span4">
                 <div class="row  rec_title">
-                    <h4>Recommended Task:</h4>
+                    <h4>Add Recommended Task:</h4>
                 </div>
                 <div class="row rec_title">
-                    <div class="rec span1">
-                        <p><a>Visit all 50 states</a></p>
-                    </div>
-                    <div class="rec span1">
-                        <p><a>Go to every Starbucks</a></p>
-                    </div>
-                    <div class="rec span1">
-                        <p><a>Graduate from Princeton</a></p>
-                    </div>
-                    <div class="rec span1">
-                        <p><a>Get a job</a></p>
-                    </div>
+                    {% for task in topTasks %}
+                    <a href="">
+                        <div class="rec span1">
+                            <p>{{task.task_text}}</p>
+                        </div>
+                    </a> 
+                    {% endfor %}
+                    <a href="/search/">
+                        <div class="rec span1">
+                            <p>Search for more tasks!</p>
+                        </div>
+                    </a>
                 </div>
             <div class="newsfeed">
                 <div class ="row">

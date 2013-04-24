@@ -4,7 +4,12 @@ from django.template import RequestContext
 from models import Tag, Task, User, Ownership
 
 def home(request):
-	return render_to_response('home.html')
+
+	topTasks = Task.objects.order_by('count')[0:3]
+
+	return render_to_response('home.html',
+		{'topTasks':topTasks},
+		context_instance = RequestContext(request))
 
 def login(request):
 	return render_to_response('login.html', context_instance=RequestContext(request))
