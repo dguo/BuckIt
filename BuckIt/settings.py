@@ -1,7 +1,7 @@
 # Django settings for BuckIt project.
 
 import os
-
+import dj_database_url
 
 PWD = os.path.dirname(os.path.realpath(__file__))
 
@@ -158,3 +158,7 @@ LOGGING = {
         },
     }
 }
+
+
+DATABASES['default'] = dj_database_url.config()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
