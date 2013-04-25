@@ -4,11 +4,14 @@ from django.template import RequestContext
 from models import Tag, Task, User, Ownership
 
 def home(request):
+	userId = "Molly Nacey" #we should be able to get user info from login
+	user_obj = get_object_or_404(User, name=userId)
+	owns = Ownership.objects.filter(user=user_obj).order_by('-date_set').order_by('completed')
 
 	topTasks = Task.objects.order_by('count')[0:3]
 
 	return render_to_response('home.html',
-		{'topTasks':topTasks},
+		{'topTasks':topTasks, 'owns':owns},
 		context_instance = RequestContext(request))
 
 def login(request):

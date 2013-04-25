@@ -49,20 +49,37 @@
             <div class="row">
 
                 <table class="table">
-                {% for task in tasks %}
-                    <tr><td><input type="checkbox" value="option2" id="taskcheck"></td>
-                    <td>{{task.task_text}}</td>
-                    <td>{{task.date_set}}</td>
-                    
-                    <td>{{task.date_done}}</td>
-                    {% for tag in task.tags.all %}
-                        #{{tag.tag_text}}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </table>
+                    <tr class="tableTitle">
+                        <td class="tableTitle"></td>
+                        <td>Task</td>
+                        <td>Day Added</td>
+                        <td>Day Completed</td>
+                        <td>Tags</td>
+                    </tr>
+                    <tr>
+                     {% for own in owns %}
+                     <tr>
+                        {% if own.completed %}
+                        <td><i class="icon-check"></i></td>
+                        {% else %}
+                        <td><input type="checkbox" value="option2" id="taskcheck"></td>
+                        {% endif %}
+                         <td>{{own.task.task_text}}</td>
+                         <td>{{own.date_set}}</td>
+                         {% if own.completed %}
+                         <td>{{own.date_done}}</td>
+                         {% else %}
+                         <td></td>
+                         {% endif %}
+                         <td>
+                            {% for tag in own.task.tags.all %}
+                            #{{tag.tag_text}}</br>
+                            {% endfor %}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
-        </div>
         <div class="container offset1 span4">
                 <div class="row  rec_title">
                     <h4>Add Recommended Task:</h4>
