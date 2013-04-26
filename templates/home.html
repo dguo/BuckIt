@@ -116,6 +116,17 @@
                     </div>
                 </div>
                 {% endfor %}
+                <div class="row">
+                    <div class="news">
+                    	<script>
+                    	FB.api('/me/friends', function(response){
+                    	friends = response.data;
+                    	// Iterate through all friends, look for those with ids in our database
+                    	// Find the most recent activities of each of those in our database 
+                    	});
+                    	</script>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
