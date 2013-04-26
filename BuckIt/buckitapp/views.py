@@ -2,6 +2,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from models import Tag, Task, User, Ownership
+import itertools
 
 def home(request):
 	userId = "Molly Nacey" #we should be able to get user info from login
@@ -13,7 +14,7 @@ def home(request):
 		# create the new tag and task if they don't exist already
 		new_tag = Tag.objects.filter(tag_text = request.POST['tags'])
 		if len(new_tag) == 1:
-			new_tag = new_tag[0]
+			new_tag = new_tag[0].lower()
 		else:
 			new_tag = Tag(tag_text = request.POST['tags'])
 			new_tag.save()
@@ -29,14 +30,17 @@ def home(request):
 			new_ownership.save()
 
 
-		owns = Ownership.objects.filter(user=user_obj).order_by('-date_set').order_by('completed')
-		topTasks = Task.objects.order_by('count')[0:3]
-		return render_to_response('home.html',
+			owns1 = Ownership.objects.filter(user=user_obj).filter(completed=False).order_by('-date_set')
+			owns2 = Ownership.objects.filter(user=user_obj).filter(completed=True).order_by('-date_done')
+			owns = itertools.chain(owns1, owns2)
+			return render_to_response('home.html',
 		                          {'topTasks':topTasks, 'owns':owns},
 		                          context_instance = RequestContext(request))
 
 	else:	
-		owns = Ownership.objects.filter(user=user_obj).order_by('-date_set').order_by('completed')
+		owns1 = Ownership.objects.filter(user=user_obj).filter(completed=False).order_by('-date_set')
+		owns2 = Ownership.objects.filter(user=user_obj).filter(completed=True).order_by('-date_done')
+		owns = itertools.chain(owns1, owns2)
 		topTasks = Task.objects.order_by('count')[0:3]
 		return render_to_response('home.html',
 		                          {'topTasks':topTasks, 'owns':owns},
@@ -57,7 +61,7 @@ def profile(request, userid):
 
 def search(request):
 	if request.method == 'POST':
-		tagname = request.POST['tagQuery']
+		tagname = request.POST['tagQuery'].lower()
 		try:
 			tag = Tag.objects.get(tag_text=tagname)
 			tasks = Task.objects.filter(tags=tag)
