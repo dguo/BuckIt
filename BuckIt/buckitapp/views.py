@@ -12,9 +12,9 @@ def home(request):
 		print request.POST['task']
 		print request.POST['tags']
 		# create the new tag and task if they don't exist already
-		new_tag = Tag.objects.filter(tag_text = request.POST['tags'])
+		new_tag = Tag.objects.filter(tag_text = (request.POST['tags']).lower())
 		if len(new_tag) == 1:
-			new_tag = new_tag[0].lower()
+			new_tag = new_tag[0]
 		else:
 			new_tag = Tag(tag_text = request.POST['tags'])
 			new_tag.save()
