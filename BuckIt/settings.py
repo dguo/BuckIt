@@ -1,7 +1,7 @@
 # Django settings for BuckIt project.
 
 import os
-#import dj_database_url
+import dj_database_url
 
 PWD = os.path.dirname(os.path.realpath(__file__))
 
