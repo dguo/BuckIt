@@ -1,5 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from models import Tag, Task, User, Ownership
 import itertools
@@ -30,12 +31,7 @@ def home(request):
 			new_ownership.save()
 
 
-			owns1 = Ownership.objects.filter(user=user_obj).filter(completed=False).order_by('-date_set')
-			owns2 = Ownership.objects.filter(user=user_obj).filter(completed=True).order_by('-date_done')
-			owns = itertools.chain(owns1, owns2)
-			return render_to_response('home.html',
-		                          {'topTasks':topTasks, 'owns':owns},
-		                          context_instance = RequestContext(request))
+		return HttpResponseRedirect('')
 
 	else:	
 		owns1 = Ownership.objects.filter(user=user_obj).filter(completed=False).order_by('-date_set')
