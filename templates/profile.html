@@ -26,8 +26,14 @@ $(document).ready(function() {
         $('#listcontainer').hide();
     });
 });
-</script>
 
+$(function() {
+    $('#profile_nav_button').addClass('current-page');
+    $('#home_nav_button').removeClass('current-page');
+    $('#search_nav_button').removeClass('current-page');
+    $('#login_nav_button').removeClass('current-page');
+});
+</script>
 {% endblock %}
 <!-- Gray Block -->
 {% block grayBlock %}

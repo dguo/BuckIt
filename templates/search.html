@@ -2,6 +2,17 @@
 
 {% block titleExtra %} | Search {% endblock %}
 
+{% block scriptfn %}
+<script type="text/javascript">
+$(function() {
+    $('#search_nav_button').addClass('current-page');
+    $('#profile_nav_button').removeClass('current-page');
+    $('#home_nav_button').removeClass('current-page');
+    $('#login_nav_button').removeClass('current-page');
+});
+</script>
+{% endblock%}
+
 {% block grayBlock %}
 <div class="page-title">
 	<div class="container">

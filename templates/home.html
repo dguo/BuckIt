@@ -2,16 +2,26 @@
 
 {% block titleExtra %} | Home {% endblock %}
 
-{% block bodyscripts %}
-    <script type="text/javascript"> 
+{% block scriptfn %}
+    <script type="text/javascript">
+    $(function() { 
     jQuery(".tagManager").tagsManager({
-        preventSubmitOnEnter: true,
+        preventSubmitOnEnter: false,
         typeahead: true,
         typeaheadAjaxSource: null,
         typeaheadSource: ["Princeton", "Family", "Friends"],
         blinkBGColor_1: '#FFFF9C',
         blinkBGColor_2: '#CDE69C',
-    });</script>
+    });
+});</script>
+    <script type="text/javascript">
+    $(function() {
+        $('#home_nav_button').addClass('current-page');
+        $('#profile_nav_button').removeClass('current-page');
+        $('#search_nav_button').removeClass('current-page');
+        $('#login_nav_button').removeClass('current-page');
+    });
+    </script>
 {% endblock %}
 
 {% block grayBlock %}

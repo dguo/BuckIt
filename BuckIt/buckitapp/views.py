@@ -13,20 +13,30 @@ def home(request):
 		print request.POST['task']
 		print request.POST['tags']
 		# create the new tag and task if they don't exist already
-		new_tag = Tag.objects.filter(tag_text = (request.POST['tags']).lower())
-		if len(new_tag) == 1:
-			new_tag = new_tag[0]
-		else:
-			new_tag = Tag(tag_text = request.POST['tags'])
-			new_tag.save()
-		
+
+		tag_sub = request.POST['hidden-tags'].lower().split(',')
+		tag_list = set()
+
+		for tag in tag_sub:
+
+			new_tag = Tag.objects.filter(tag_text = tag)
+
+			if len(new_tag) == 1:
+				new_tag = new_tag[0]
+				tag_list.add(new_tag)
+			else:
+				new_tag = Tag(tag_text = tag)
+				tag_list.add(new_tag)
+				new_tag.save()
+
 		new_task = Task.objects.filter(task_text = request.POST['task'])
 		if len(new_task) == 1:
 			pass
 		else:
 			new_task = Task(task_text = request.POST['task'])
 			new_task.save()
-			new_task.tags.add(new_tag)
+			for tag in tag_list:
+				new_task.tags.add(tag)
 			new_ownership = Ownership(user = user_obj, task = new_task)
 			new_ownership.save()
 
