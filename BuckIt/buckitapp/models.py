@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Tag(models.Model):
@@ -15,19 +16,19 @@ class Task(models.Model):
 	def __unicode__(self):
 		return self.task_text
 
-class User(models.Model):
+class UserProfile(models.Model):
+	user = models.OneToOneField(User)
 	name = models.CharField(max_length=40)
-	password = models.CharField(max_length=40)
 	friends = models.ManyToManyField("self", null=True, blank=True)
 	tasks = models.ManyToManyField(Task, through="Ownership")
 	def __unicode__(self):
 		return self.name
 
 class Ownership(models.Model):
-	user = models.ForeignKey(User)
+	userProfile = models.ForeignKey(UserProfile)
 	task = models.ForeignKey(Task)
 	completed = models.BooleanField(default=False)
 	date_set = models.DateTimeField(auto_now_add=True)
 	date_done = models.DateTimeField(null=True, blank=True)
 	def __unicode__(self):
-		return self.user.name + " : " + self.task.task_text
+		return self.userProfile.name + " : " + self.task.task_text
