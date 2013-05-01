@@ -8,6 +8,7 @@ import itertools
 def home(request):
 	userId = "Molly Nacey" #we should be able to get user info from login
 	user_obj = get_object_or_404(User, name=userId)
+
 	
 	if request.method == 'POST':
 		print request.POST['task']
