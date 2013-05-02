@@ -25,8 +25,8 @@ class UserProfile(models.Model):
 		return self.name
 
 class Ownership(models.Model):
-	userProfile = models.ForeignKey(UserProfile)
-	task = models.ForeignKey(Task)
+	userProfile = models.ForeignKey(UserProfile, null=True)
+	task = models.ForeignKey(Task, null=True)
 	completed = models.BooleanField(default=False)
 	date_set = models.DateTimeField(auto_now_add=True)
 	date_done = models.DateTimeField(null=True, blank=True)
