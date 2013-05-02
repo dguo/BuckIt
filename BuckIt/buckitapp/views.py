@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 import itertools
 
 def home(request):
+	loggedin = False
 
 	username = "Molly" # we should be able to get user info from login
 	password = "Molly"
@@ -24,9 +25,12 @@ def home(request):
 
 			if request.user.is_authenticated():
 
+				loggedin = True
 				userProfile_obj = get_object_or_404(UserProfile, user=user)
 
+
 				if request.method == 'POST':
+					
 					print request.POST['task']
 					print request.POST['tags']
 					# create the new tag task if it doesn't exist already
@@ -65,7 +69,7 @@ def home(request):
 					owns = itertools.chain(owns1, owns2)
 					topTasks = Task.objects.order_by('count')[0:3]
 					return render_to_response('home.html',
-					                          {'topTasks':topTasks, 'owns':owns},
+					                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin},
 					                          context_instance = RequestContext(request))	
 
 		else:
@@ -85,15 +89,20 @@ def profile(request, userid):
 	#newid = userid.replace('_',' ')
 
 	if request.user.is_authenticated():
+		loggedin = True
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 		owns = Ownership.objects.filter(userProfile=userProfile_obj)
 		return render_to_response('profile.html', 
-		                          {'owns': owns}, 
+		                          {'owns': owns, 'loggedin':loggedin}, 
 		                          context_instance = RequestContext(request))
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))
 
 def search(request):
+	if request.user.is_authenticated():
+		loggedin = True
+	else:
+		loggedin = False
 	if request.method == 'POST':
 		tagname = request.POST['tagQuery'].lower()
 		try:
@@ -104,4 +113,4 @@ def search(request):
 	else:
 		tasks = Task.objects.all()
 	return render_to_response('search.html',
-		{'tasks': tasks}, context_instance=RequestContext(request))
+		{'tasks': tasks, 'loggedin':loggedin}, context_instance=RequestContext(request))

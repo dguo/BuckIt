@@ -124,7 +124,13 @@
                                         <a href="/search/"><i class="icon-search"></i><br />Search</a>
                                 </li>
                                 <li id="login_nav_button">
-                                    <a href="/login/"><i class="icon-road"></i><br />log out</a>
+                                    <a href="/login/"><i class="icon-road"></i><br />
+                                        {% if loggedin %}
+                                        log out
+                                        {% else %}
+                                        log in
+                                        {% endif %}
+                                    </a>
                                     </li>
                                 </ul>
                             </div>
