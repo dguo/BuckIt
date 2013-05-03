@@ -244,8 +244,9 @@ a .rec{
 
 .newsfeed .news {
     text-align: left;
-    padding-top: 15px;
-    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
     padding-left: 5px;
     background: #f8f8f8;
     border-bottom: 2px dashed #ff332e;

@@ -112,20 +112,29 @@
                 <div class ="row">
                     <div class ="news">
                         <h4>News Feed</h4>
+                        <div class="icon-awesome pull-right"><h4>
+                            <button class="login" onclick="login()" title="Click to connect with facebook and update newsfeed"><i class="icon-facebook-sign"></i> CONNECT</button></h4> 
+                        </div>
                     </div>
                 </div>
+                {% if newsevents %}
                 {% for event in newsevents%}
                 <div class="row">
                     <div class="news">
-                            <img src="static/img/portfolio/work1.jpg" alt="">
-                            {% if event.isCompleted %}
-                                <p>{{event.complete_date}}<br>{{event.user}} completed {{event.event}}</p>
-                            {% else %}
-                                <p>{{event.complete_date}}<br>{{event.user}} completed {{event.event}}</p>
-                            {% endif %}
+                        <img src="static/img/portfolio/work1.jpg" alt="">
+                        {% if event.isCompleted %}
+                        <p>{{event.complete_date}}<br>{{event.user}} completed {{event.event}}</p>
+                        {% else %}
+                        <p>{{event.complete_date}}<br>{{event.user}} completed {{event.event}}</p>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <div class="row" style="background-color:#f8f8f8">
+                    <h4> Click to allow access to facebook and see what your friends have been up to on BuckIt</h4>
+                </div>
+                {% endif %}
                 <div class="row">
                     <div class="news">
                     	<script>
