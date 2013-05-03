@@ -19,6 +19,7 @@ class Task(models.Model):
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
 	name = models.CharField(max_length=40)
+	fb_id = models.CharField(max_length=300, null=True, default=3)
 	friends = models.ManyToManyField("self", null=True, blank=True)
 	tasks = models.ManyToManyField(Task, through="Ownership")
 	def __unicode__(self):

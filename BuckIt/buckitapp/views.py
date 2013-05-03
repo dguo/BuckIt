@@ -11,78 +11,86 @@ import itertools
 
 def home(request):
 	loggedin = False
+	print "in home"
 
-	username = "Molly" # we should be able to get user info from login
-	password = "Molly"
+	if request.user.is_authenticated():
 
-	user = authenticate(username=username, password=password)
+		print "authenticated"
+		loggedin = True
+		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 
-	if user is not None:
-		
-		if user.is_active:
+		if request.method == 'POST':
 			
-			auth_login(request, user)
+			print request.POST['task']
+			print request.POST['tags']
+			# create the new tag task if it doesn't exist already
+			tag_sub = request.POST['hidden-tags'].lower().split(',')
+			tag_list = set()
 
-			if request.user.is_authenticated():
+			for tag in tag_sub:
 
-				loggedin = True
-				userProfile_obj = get_object_or_404(UserProfile, user=user)
+				new_tag = Tag.objects.filter(tag_text=tag)
 
+				if len(new_tag) == 1:
+					new_tag = new_tag[0]
+					tag_list.add(new_tag)
+				else:
+					new_tag = Tag(tag_text=tag)
+					tag_list.add(new_tag)
+					new_tag.save()
 
-				if request.method == 'POST':
-					
-					print request.POST['task']
-					print request.POST['tags']
-					# create the new tag task if it doesn't exist already
-					tag_sub = request.POST['hidden-tags'].lower().split(',')
-					tag_list = set()
+			# create the new task if it doesn't exist already
+			new_task = Task.objects.filter(task_text=request.POST['task'])
+			if len(new_task) == 1:
+				pass
+			else:
+				new_task = Task(task_text=request.POST['task'])
+				new_task.save()
+				for tag in tag_list:
+					new_task.tags.add(tag)
+				new_ownership = Ownership(userProfile=userProfile_obj, task=new_task)
+				new_ownership.save()
 
-					for tag in tag_sub:
+			return HttpResponseRedirect('')
 
-						new_tag = Tag.objects.filter(tag_text = tag)
-
-						if len(new_tag) == 1:
-							new_tag = new_tag[0]
-							tag_list.add(new_tag)
-						else:
-							new_tag = Tag(tag_text = tag)
-							tag_list.add(new_tag)
-							new_tag.save()
-
-					# create the new task if it doesn't exist already
-					new_task = Task.objects.filter(task_text = request.POST['task'])
-					if len(new_task) == 1:
-						pass
-					else:
-						new_task = Task(task_text = request.POST['task'])
-						new_task.save()
-						for tag in tag_list:
-							new_task.tags.add(tag)
-						new_ownership = Ownership(userProfile = userProfile_obj, task = new_task)
-						new_ownership.save()
-
-					return HttpResponseRedirect('')
-
-				else:	
-					owns1 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=False).order_by('-date_set')
-					owns2 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=True).order_by('-date_done')
-					owns = itertools.chain(owns1, owns2)
-					topTasks = Task.objects.order_by('count')[0:3]
-					return render_to_response('home.html',
-					                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin},
-					                          context_instance = RequestContext(request))	
-
-		else:
-			# Return a 'disabled account' error message
-			pass
-	else:
-		# Return an 'invalid login' error message
-		pass
-
+		else:	
+			owns1 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=False).order_by('-date_set')
+			owns2 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=True).order_by('-date_done')
+			owns = itertools.chain(owns1, owns2)
+			topTasks = Task.objects.order_by('count')[0:3]
+			return render_to_response('home.html',
+			                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin},
+			                          context_instance=RequestContext(request))	
 	
+	# user is not logged in
+	else:
+		print "not logged in apparently"
+		return HttpResponseRedirect('/login')
 
 def login(request):
-	logout(request)
+
+	print "in login"
+	if request.method == 'POST':
+
+		# login the user; return an error message if applicable
+		if 'login' in request.POST:
+			username = request.POST['username']
+			password = request.POST['password']
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				if user.is_active:
+					auth_login(request, user)
+					if request.user.is_authenticated():
+						print "wtf"
+						HttpResponseRedirect('/home/')
+				else:
+					# Return a 'disabled account' error message
+					HttpResponseRedirect('')
+			else:
+				# return an 'invalid login' error message
+				HttpResponseRedirect('')
+
+
 	return render_to_response('login.html', context_instance=RequestContext(request))
 
 def profile(request, userid):
