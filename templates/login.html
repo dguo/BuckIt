@@ -4,6 +4,20 @@
 
 {% block scriptfn %}
 <script type="text/javascript">
+$(document).ready(function() {
+    $('#register').hide();
+
+    $('#registerbutton').live('click', function(event) {
+        $('#register').show();
+        $('#login').hide();
+    });
+
+    $('#loginbutton').live('click', function(event) {
+        $('#login').show();
+        $('#register').hide();
+    });
+});
+
 $(function() {
     $('#login_nav_button').addClass('current-page');
     $('#profile_nav_button').removeClass('current-page');
@@ -41,15 +55,45 @@ $(function() {
 {% endblock %}
 
 {% block Content %}
+<div class="icon-awesome">
+    <i class="icon-facebook-sign"></i>
+    <button type="submit" class="login" onclick="login()">Connect to Facebook</button> 
+</div>
+<div class="container">
+    <div class="container profile">
+        <div class="row">
+            <a id="loginbutton" href="#">Login</a>
+            <a id="registerbutton" href="#">Register</a>
+        </div>
         <div class="what-we-do container">
             <div class="row">
                 <div class="service span5 offset3">
-                    <div class="icon-awesome">
-                        <i class="icon-facebook-sign"></i>                    
+                    <div id="login">
+                        <form class="form" method="POST" action=".">{% csrf_token %}
+                            <label for="name">User Name:</label>
+                            <input id="name" type="text" name="username"/>
+                            <label for="password">Password:</label>
+                            <input id="password" type="text" name="password"/>
+                            <h4><button type="submit" class="login">LOGIN</button></h4>
+                        </form>
                     </div>
-                    <h4><button class="login" onclick="login()">LOGIN</button></h4>
+                    <div id="register">
+                        <form class="form" method="POST" action=".">{% csrf_token %}
+                            <label for="name">User Name:</label>
+                            <input id="name" type="text" name="username"/>
+                            <label for="firstname">First Name:</label>
+                            <input id="firstname" type="text" name="firstname"/>
+                            <label for="lastname">Last Name:</label>
+                            <input id="lastname" type="text" name="lastname"/>
+                            <label for="password">Password:</label>
+                            <input id="password" type="text" name="password"/>
+                            <h4><button type="submit" class="login">Create Account</button></h4>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="fb-like" data-send="true" data-width="450" data-show-faces="true" /></div>
-{% endblock %}
+    </div>
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="true" /></div>
+</div>
+    {% endblock %}
