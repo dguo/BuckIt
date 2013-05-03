@@ -41,7 +41,7 @@ $(function() {
     <div class="container">
         <div class="row buckit_blue">
             <h1 class="span1"><i class="icon-user page-title-icon"></i></h1>
-            <h1 class="span5">{{ name }} Molly Nacey</h1>
+            <h1 class="span5">{{ nameprof }}</h1>
         </div>
     </div>
 </div>
@@ -83,7 +83,9 @@ $(function() {
                         {% for tag in own.task.tags.all %}
                         #{{tag.tag_text}}</br>
                         {% endfor %}</td>
+                        {% if not profIsUser %}
                         <td><button type="submit"> + </button></td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </table>

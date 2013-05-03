@@ -18,6 +18,8 @@ def home(request):
 		loggedin = True
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 
+		username = userProfile_obj.name
+
 		if request.method == 'POST':
 			
 			# create the new tag task if it doesn't exist already
@@ -57,7 +59,8 @@ def home(request):
 			ownTasks = Ownership.objects.filter(userProfile=userProfile_obj).values('task')
 			topTasks = Task.objects.order_by('count').exclude(id__in=ownTasks)[0:3]
 			return render_to_response('home.html',
-			                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin},
+			                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin,
+			                          'name':username},
 			                          context_instance=RequestContext(request))	
 	
 	# user is not logged in
@@ -107,33 +110,39 @@ def login(request):
 	return render_to_response('login.html', context_instance=RequestContext(request))
 
 def profile(request, userid):
-	#newid = userid.replace('_',' ')
+	newid = userid.replace('_',' ')
 
+	profIsUser = False
 	if request.user.is_authenticated():
 		loggedin = True
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
-		owns = Ownership.objects.filter(userProfile=userProfile_obj)
+		name = userProfile_obj.name
+		if newid == name:
+			profIsUser = True
+			owns = Ownership.objects.filter(userProfile=userProfile_obj)
+		else:
+			other_user = get_object_or_404(UserProfile, name=newid)
+			owns = Ownership.objects.filter(userProfile=other_user)
 		return render_to_response('profile.html', 
-		                          {'owns': owns, 'loggedin':loggedin}, 
+		                          {'owns': owns, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
 		                          context_instance = RequestContext(request))
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))
 
 def search(request):
-	logout(request)
-
 	if request.user.is_authenticated():
+		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
+		name = userProfile_obj.name
 		loggedin = True
-	else:
-		loggedin = False
-	if request.method == 'POST':
-		tagname = request.POST['tagQuery'].lower()
-		try:
-			tag = Tag.objects.get(tag_text=tagname)
-			tasks = Task.objects.filter(tags=tag)
-		except Tag.DoesNotExist:
-			tasks = None
-	else:
-		tasks = Task.objects.all()
+
+		if request.method == 'POST':
+			tagname = request.POST['tagQuery'].lower()
+			try:
+				tag = Tag.objects.get(tag_text=tagname)
+				tasks = Task.objects.filter(tags=tag)
+			except Tag.DoesNotExist:
+				tasks = None
+		else:
+			tasks = Task.objects.all()
 	return render_to_response('search.html',
-		{'tasks': tasks, 'loggedin':loggedin}, context_instance=RequestContext(request))
+		{'tasks': tasks, 'loggedin':loggedin, 'name':name}, context_instance=RequestContext(request))
