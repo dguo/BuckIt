@@ -117,6 +117,15 @@ def profile(request, userid):
 		loggedin = True
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 		name = userProfile_obj.name
+
+		if request.method == 'POST':
+			taskTxt = request.POST['addtaskbutton']
+			addedtask = get_object_or_404(Task, task_text=taskTxt)
+			addedtask.count = addedtask.count + 1
+			addedtask.save()
+			new_ownership = Ownership(userProfile=userProfile_obj, task=addedtask)
+			new_ownership.save()
+
 		if newid == name:
 			profIsUser = True
 			owns = Ownership.objects.filter(userProfile=userProfile_obj)

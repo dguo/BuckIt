@@ -84,7 +84,8 @@ $(function() {
                         #{{tag.tag_text}}</br>
                         {% endfor %}</td>
                         {% if not profIsUser %}
-                        <td><button type="submit"> + </button></td>
+                        <td><form name="addtask" method="POST" action=".">{% csrf_token %}
+                        <button name="addtaskbutton" type="submit" value="{{own.task.task_text}}">+</button></form> </td>
                         {% endif %}
                     </tr>
                     {% endfor %}
