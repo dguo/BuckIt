@@ -22,6 +22,11 @@
         $('#login_nav_button').removeClass('current-page');
     });
     </script>
+    <script type="text/javascript">
+    function submitOnClick(recaddform) {
+        document.forms[recaddform].submit();
+    }
+    </script>
 {% endblock %}
 
 {% block grayBlock %}
@@ -72,7 +77,12 @@
                         {% if own.completed %}
                         <td><i class="icon-check"></i></td>
                         {% else %}
-                        <td><input type="checkbox" value="option2" id="taskcheck"></td>
+                        <td><form id="{{own.task.task_text}}-check" name="checktask" method="POST" action=".">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{own.task.task_text}}" id="taskInfo" name="taskInfo"/>
+                         <input type="checkbox" value="option2" id="taskcheck" onClick="submitOnClick('{{own.task.task_text}}-check')" name="check_submit"/>
+                        </form>
+                        </td>
                         {% endif %}
                          <td>{{own.task.task_text}}</td>
                          <td>{{own.date_set}}</td>
@@ -94,19 +104,27 @@
                 <div class="row  rec_title">
                     <h4>Add Recommended Task:</h4>
                 </div>
-                <div class="row rec_title">
+                <div class="row rec_title form-inline">
                     {% for task in topTasks %}
-                    <a href="" onclick>
-                        <div class="rec span1">
-                            <p>{{task.task_text}}</p>
-                        </div>
-                    </a> 
+                    <div>
+                        <form id="{{task.task_text}}-form" name="addtask" method="POST" action=".">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{task.task_text}}" id="taskInfo" name="taskInfo"/>
+                            <a id="submitrec" onclick="submitOnClick('{{task.task_text}}-form')" name="recsubmit">
+                                <div class="rec span1">
+                                    <p>{{task.task_text}}</p>
+                                </div>
+                            </a>
+                        </form>
+                        </div> 
                     {% endfor %}
+                    <div>
                     <a href="/search/">
                         <div class="rec span1">
                             <p>Search for more tasks!</p>
                         </div>
                     </a>
+                </div>
                 </div>
             <div class="newsfeed">
                 <div class ="row">

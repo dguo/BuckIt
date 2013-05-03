@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 import itertools
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 def home(request):
 	loggedin = False
@@ -22,35 +23,55 @@ def home(request):
 
 		if request.method == 'POST':
 			
-			# create the new tag task if it doesn't exist already
-			tag_sub = request.POST['hidden-tags'].lower().split(',')
-			tag_list = set()
+			if 'addTask' in request.POST:
+			    # create the new tag task if it doesn't exist already
+			    tag_sub = request.POST['hidden-tags'].lower().split(',')
+			    tag_list = set()
 
-			for tag in tag_sub:
+			    for tag in tag_sub:
 
-				new_tag = Tag.objects.filter(tag_text=tag)
+			    	new_tag = Tag.objects.filter(tag_text=tag)
 
-				if len(new_tag) == 1:
-					new_tag = new_tag[0]
-					tag_list.add(new_tag)
-				else:
-					new_tag = Tag(tag_text=tag)
-					tag_list.add(new_tag)
-					new_tag.save()
+			    	if len(new_tag) == 1:
+			    		new_tag = new_tag[0]
+			    		tag_list.add(new_tag)
+			    	else:
+			    		new_tag = Tag(tag_text=tag)
+			    		tag_list.add(new_tag)
+			    		new_tag.save()
 
-			# create the new task if it doesn't exist already
-			new_task = Task.objects.filter(task_text=request.POST['task'])
-			if len(new_task) == 1:
-				pass
+			    # create the new task if it doesn't exist already
+			    new_task = Task.objects.filter(task_text=request.POST['task'])
+			    if len(new_task) == 1:
+			    	pass
+			    else:
+			    	new_task = Task(task_text=request.POST['task'])
+			    	new_task.save()
+			    	for tag in tag_list:
+			    		new_task.tags.add(tag)
+			    	new_ownership = Ownership(userProfile=userProfile_obj, task=new_task)
+			    	new_ownership.save()
+
+			    return HttpResponseRedirect('')
+
+			elif 'check_submit' in request.POST:
+				taskTxt = request.POST['taskInfo']
+				checkedtask = get_object_or_404(Task, task_text=taskTxt)
+				checkedtask.completed = True
+				checkedtask.date_done = datetime.now()
+				checkedtask.save()
+
+				return HttpResponseRedirect('')
+
 			else:
-				new_task = Task(task_text=request.POST['task'])
-				new_task.save()
-				for tag in tag_list:
-					new_task.tags.add(tag)
-				new_ownership = Ownership(userProfile=userProfile_obj, task=new_task)
+				taskTxt = request.POST['taskInfo']
+				addedtask = get_object_or_404(Task, task_text=taskTxt)
+				addedtask.count = addedtask.count + 1
+				addedtask.save()
+				new_ownership = Ownership(userProfile=userProfile_obj, task=addedtask)
 				new_ownership.save()
 
-			return HttpResponseRedirect('')
+				return HttpResponseRedirect('')
 
 		else:	
 			owns1 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=False).order_by('-date_set')
