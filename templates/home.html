@@ -22,11 +22,28 @@
         $('#login_nav_button').removeClass('current-page');
     });
     </script>
+<<<<<<< HEAD
     <script type="text/javascript">
     function submitOnClick(recaddform) {
         document.forms[recaddform].submit();
     }
     </script>
+=======
+    <script>
+    FB.api('/me/friends', function(response){
+     var friendIDs = new Array();
+     var friendPics = new Array();
+     for (i = 0; i < response.data.length; i++)
+             {
+             friendIDs[i] = response.data[i].id;
+             picString = '/' + friendIDs[i] + '/picture';
+             FB.api(picString, function(resp){
+             	friendPics[i] = resp.data.url;			                				
+             });                		
+             }
+     });
+     </script>    
+>>>>>>> 53d638eab4dbd79fef2e18dbfe6a3add15e814a6
 {% endblock %}
 
 {% block grayBlock %}
@@ -37,7 +54,15 @@
                     <h1 class="span5">{{name}}</h1>
             </div>
         </div>
+        <form name = "getID" action="." method="POST">
+        	<input type="hidden" name="fbid">
+        </form>
+        <script>
+        	getID.fbid.value = uid;
+        </script>
+        	
     </div>
+    
 {% endblock %}
 
 {% block Content %}
@@ -153,24 +178,6 @@
                     <h4> Click to allow access to facebook and see what your friends have been up to on BuckIt</h4>
                 </div>
                 {% endif %}
-                <div class="row">
-                    <div class="news">
-                    	<script>
-                    	FB.api('/me/friends', function(response){
-                    	var friendIDs = new Array();
-                    	var friendPics = new Array();
-                    	for (i = 0; i < response.data.length; i++)
-                    		{
-                    		friendIDs[i] = response.data[i].id;
-                    		picString = '/' + friendIDs[i] + '/picture';
-                    		FB.api(picString, function(resp){
-                    			friendPics[i] = resp.data.url;			                				
-                    		});                		
-                    		}
-                    	});
-                    	</script>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
