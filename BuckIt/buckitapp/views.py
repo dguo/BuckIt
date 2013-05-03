@@ -22,35 +22,41 @@ def home(request):
 
 		if request.method == 'POST':
 			
-			# create the new tag task if it doesn't exist already
-			tag_sub = request.POST['hidden-tags'].lower().split(',')
-			tag_list = set()
-
-			for tag in tag_sub:
-
-				new_tag = Tag.objects.filter(tag_text=tag)
-
-				if len(new_tag) == 1:
-					new_tag = new_tag[0]
-					tag_list.add(new_tag)
+			if 'addTask' in request.POST: 
+				# create the new tag task if it doesn't exist already
+				tag_sub = request.POST['hidden-tags'].lower().split(',')
+				tag_list = set()
+	
+				for tag in tag_sub:
+	
+					new_tag = Tag.objects.filter(tag_text=tag)
+	
+					if len(new_tag) == 1:
+						new_tag = new_tag[0]99
+						tag_list.add(new_tag)
+					else:
+						new_tag = Tag(tag_text=tag)
+						tag_list.add(new_tag)
+						new_tag.save()
+	
+				# create the new task if it doesn't exist already
+				new_task = Task.objects.filter(task_text=request.POST['task'])
+				if len(new_task) == 1:
+					pass
 				else:
-					new_tag = Tag(tag_text=tag)
-					tag_list.add(new_tag)
-					new_tag.save()
-
-			# create the new task if it doesn't exist already
-			new_task = Task.objects.filter(task_text=request.POST['task'])
-			if len(new_task) == 1:
-				pass
+					new_task = Task(task_text=request.POST['task'])
+					new_task.save()
+					for tag in tag_list:
+						new_task.tags.add(tag)
+					new_ownership = Ownership(userProfile=userProfile_obj, task=new_task)
+					new_ownership.save()
+	
+				return HttpResponseRedirect('')
+			
 			else:
-				new_task = Task(task_text=request.POST['task'])
-				new_task.save()
-				for tag in tag_list:
-					new_task.tags.add(tag)
-				new_ownership = Ownership(userProfile=userProfile_obj, task=new_task)
-				new_ownership.save()
-
-			return HttpResponseRedirect('')
+				uid = request.POST['fbid']
+				userProfile_obj.fb_id = uid
+				userProfile_obj.save()
 
 		else:	
 			owns1 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=False).order_by('-date_set')
