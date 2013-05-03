@@ -61,7 +61,6 @@ def home(request):
 	
 	# user is not logged in
 	else:
-		print "not logged in apparently"
 		return HttpResponseRedirect('/login')
 
 def login(request):
@@ -78,16 +77,17 @@ def login(request):
 				if user.is_active:
 					auth_login(request, user)
 					if request.user.is_authenticated():
-						print "wtf"
-						HttpResponseRedirect('/home/')
+						return HttpResponseRedirect('/home')
 				else:
 					# Return a 'disabled account' error message
-					HttpResponseRedirect('')
+					return HttpResponseRedirect('')
 			else:
 				# return an 'invalid login' error message
-				HttpResponseRedirect('')
+				return HttpResponseRedirect('')
 
-	print "no post"
+		# make a new account
+		if 'create' in request.POST:
+			pass
 
 	return render_to_response('login.html', context_instance=RequestContext(request))
 
