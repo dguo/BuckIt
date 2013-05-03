@@ -87,7 +87,21 @@ def login(request):
 
 		# make a new account
 		if 'create' in request.POST:
-			pass
+			username = request.POST['username']
+			first_name = request.POST['firstname']
+			last_name = request.POST['lastname']
+			password = request.POST['password']
+			name = first_name + ' ' + last_name
+
+			# still need to check if username already exists
+
+			new_user = User.objects.create_user(username, '', password)
+			new_user.save()
+			new_user_profile = UserProfile(user=new_user, name=name)
+			new_user_profile.save()
+			user = authenticate(username=username, password=password)
+			auth_login(request, user)
+			return HttpResponseRedirect('/home')
 
 	return render_to_response('login.html', context_instance=RequestContext(request))
 
