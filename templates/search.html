@@ -47,7 +47,7 @@ $(function() {
                     {% for tag in task.tags.all %}
                     #{{tag.tag_text}}</br>
                     {% endfor %}</td>
-                    <td><button type="submit"> + </button></td>
+                    <td><input type="submit"/><button> + </button></td>
                 </tr>
                 {% endfor %}
             </table>

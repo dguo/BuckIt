@@ -54,7 +54,8 @@ def home(request):
 			owns1 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=False).order_by('-date_set')
 			owns2 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=True).order_by('-date_done')
 			owns = itertools.chain(owns1, owns2)
-			topTasks = Task.objects.order_by('count')[0:3]
+			ownTasks = Ownership.objects.filter(userProfile=userProfile_obj).values('task')
+			topTasks = Task.objects.order_by('count').exclude(id__in=ownTasks)[0:3]
 			return render_to_response('home.html',
 			                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin},
 			                          context_instance=RequestContext(request))	
