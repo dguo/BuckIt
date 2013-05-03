@@ -139,9 +139,16 @@
                     <div class="news">
                     	<script>
                     	FB.api('/me/friends', function(response){
-                    	friends = response.data;
-                    	// Iterate through all friends, look for those with ids in our database
-                    	// Find the most recent activities of each of those in our database 
+                    	var friendIDs = new Array();
+                    	var friendPics = new Array();
+                    	for (i = 0; i < response.data.length; i++)
+                    		{
+                    		friendIDs[i] = response.data[i].id;
+                    		picString = '/' + friendIDs[i] + '/picture';
+                    		FB.api(picString, function(resp){
+                    			friendPics[i] = resp.data.url;			                				
+                    		});                		
+                    		}
                     	});
                     	</script>
                     </div>
