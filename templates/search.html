@@ -19,7 +19,7 @@ $(function() {
 		<div class="row">
 			<div class="add-task">
 				<div class="task-form">
-					<form class="form-inline" method="POST" action=".">{% csrf_token %}
+					<form name="search-form" class="form-inline" method="POST" action=".">{% csrf_token %}
 						<input id="name" type="text" name="tagQuery" placeholder="Search tasks by tags..."/>
 						<button type="submit" name="searchTag"> <i class="icon-search"></i> </button>
 					</form>
@@ -47,7 +47,8 @@ $(function() {
                     {% for tag in task.tags.all %}
                     #{{tag.tag_text}}</br>
                     {% endfor %}</td>
-                    <td><input type="submit"/><button> + </button></td>
+                    <td><form name="addtask" method="POST" action=".">{% csrf_token %}
+                        <button name="addtaskbutton" type="submit" value="{{task.task_text}}">+</button></form> </td>
                 </tr>
                 {% endfor %}
             </table>

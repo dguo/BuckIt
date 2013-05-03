@@ -57,7 +57,7 @@ def home(request):
 			owns2 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=True).order_by('-date_done')
 			owns = itertools.chain(owns1, owns2)
 			ownTasks = Ownership.objects.filter(userProfile=userProfile_obj).values('task')
-			topTasks = Task.objects.order_by('count').exclude(id__in=ownTasks)[0:3]
+			topTasks = Task.objects.order_by('-count').exclude(id__in=ownTasks)[0:3]
 			return render_to_response('home.html',
 			                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin,
 			                          'name':username},
@@ -135,14 +135,26 @@ def search(request):
 		name = userProfile_obj.name
 		loggedin = True
 
+		ownTasks = Ownership.objects.filter(userProfile=userProfile_obj).values('task')
+		tasks = Task.objects.order_by('count').exclude(id__in=ownTasks)
+
 		if request.method == 'POST':
-			tagname = request.POST['tagQuery'].lower()
-			try:
-				tag = Tag.objects.get(tag_text=tagname)
-				tasks = Task.objects.filter(tags=tag)
-			except Tag.DoesNotExist:
-				tasks = None
-		else:
-			tasks = Task.objects.all()
-	return render_to_response('search.html',
-		{'tasks': tasks, 'loggedin':loggedin, 'name':name}, context_instance=RequestContext(request))
+			if 'searchTag' in request.POST:
+				tagname = request.POST['tagQuery'].lower()
+				try:
+					tag = Tag.objects.get(tag_text=tagname)
+					tasks = Task.objects.filter(tags=tag)
+				except Tag.DoesNotExist:
+					tasks = None
+			elif 'addtaskbutton' in request.POST:
+				taskTxt = request.POST['addtaskbutton']
+				addedtask = get_object_or_404(Task, task_text=taskTxt)
+				addedtask.count = addedtask.count + 1
+				addedtask.save()
+				new_ownership = Ownership(userProfile=userProfile_obj, task=addedtask)
+				new_ownership.save()
+
+		return render_to_response('search.html',
+			{'tasks': tasks, 'loggedin':loggedin, 'name':name}, context_instance=RequestContext(request))
+	else:
+		return render_to_response('login.html', context_instance=RequestContext(request))
