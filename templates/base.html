@@ -61,7 +61,8 @@
 	    });
 	    FB.getLoginStatus(function(response) {
 	    if (response.status === 'connected') {
-		// connected
+		var uid = response.authResponse.userID;
+		var accessToken = response.authResponse.accessToken;
 	    } else if (response.status === 'not_authorized') {
 		// not_authorized
 	    } else {
@@ -73,8 +74,8 @@
 	    
 	    function login() {
 	    FB.login(function(response) {
-		if (response.authResponse) {
-		    user_token = response.accessToken;
+		if (response.authResponse)
+		    // connected
 		} else {
 		    // cancelled
 		}
