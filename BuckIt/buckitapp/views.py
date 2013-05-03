@@ -8,21 +8,18 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 import itertools
+from django.contrib.auth.decorators import login_required
 
 def home(request):
 	loggedin = False
-	print "in home"
 
 	if request.user.is_authenticated():
 
-		print "authenticated"
 		loggedin = True
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 
 		if request.method == 'POST':
 			
-			print request.POST['task']
-			print request.POST['tags']
 			# create the new tag task if it doesn't exist already
 			tag_sub = request.POST['hidden-tags'].lower().split(',')
 			tag_list = set()
@@ -90,6 +87,7 @@ def login(request):
 				# return an 'invalid login' error message
 				HttpResponseRedirect('')
 
+	print "no post"
 
 	return render_to_response('login.html', context_instance=RequestContext(request))
 
@@ -107,6 +105,8 @@ def profile(request, userid):
 		return render_to_response('login.html', context_instance=RequestContext(request))
 
 def search(request):
+	logout(request)
+
 	if request.user.is_authenticated():
 		loggedin = True
 	else:
