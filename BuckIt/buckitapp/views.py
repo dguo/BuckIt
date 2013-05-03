@@ -68,7 +68,7 @@ def home(request):
 		return HttpResponseRedirect('/login')
 
 def login(request):
-
+	logout(request)
 	print "in login"
 	if request.method == 'POST':
 
