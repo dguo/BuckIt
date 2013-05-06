@@ -60,12 +60,12 @@ FB.api('/me/friends', function(response){
             </div>
         </div>
         <form name = "getID" action="." method="POST">
-        	<input type="hidden" name="fbid">
+        	<input id="fbid" type="hidden" name="facebookid">
         </form>
         <script>
-        	getID.fbid.value = uid;
-        </script>
-        	
+        	document.getElementById('fbid').value = uid;
+        	document.forms['getID'].submit();
+        </script>  	
     </div>
     
 {% endblock %}
