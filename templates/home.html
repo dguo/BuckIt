@@ -3,8 +3,8 @@
 {% block titleExtra %} | Home {% endblock %}
 
 {% block scriptfn %}
-    <script type="text/javascript">
-    $(function() { 
+<script type="text/javascript">
+$(function() { 
     jQuery(".tagManager").tagsManager({
         preventSubmitOnEnter: false,
         typeahead: true,
@@ -14,36 +14,41 @@
         blinkBGColor_2: '#CDE69C',
     });
 });</script>
-    <script type="text/javascript">
-    $(function() {
+<script type="text/javascript">
+$(function() {
         $('#home_nav_button').addClass('current-page');
         $('#profile_nav_button').removeClass('current-page');
         $('#search_nav_button').removeClass('current-page');
         $('#login_nav_button').removeClass('current-page');
     });
-    </script>
-<<<<<<< HEAD
-    <script type="text/javascript">
-    function submitOnClick(recaddform) {
-        document.forms[recaddform].submit();
-    }
-    </script>
-=======
-    <script>
-    FB.api('/me/friends', function(response){
-     var friendIDs = new Array();
-     var friendPics = new Array();
-     for (i = 0; i < response.data.length; i++)
-             {
-             friendIDs[i] = response.data[i].id;
-             picString = '/' + friendIDs[i] + '/picture';
-             FB.api(picString, function(resp){
-             	friendPics[i] = resp.data.url;			                				
-             });                		
-             }
-     });
-     </script>    
->>>>>>> 53d638eab4dbd79fef2e18dbfe6a3add15e814a6
+</script>
+
+<script type="text/javascript">
+function submitOnRecClick(recaddform) {
+    document.forms[recaddform].submit();
+}
+</script>
+
+<script type="text/javascript">
+function submitOnCheckClick(recaddform) {
+    document.forms[recaddform].submit();
+}
+</script>
+
+<script>
+FB.api('/me/friends', function(response){
+   var friendIDs = new Array();
+   var friendPics = new Array();
+   for (i = 0; i < response.data.length; i++)
+   {
+       friendIDs[i] = response.data[i].id;
+       picString = '/' + friendIDs[i] + '/picture';
+       FB.api(picString, function(resp){
+          friendPics[i] = resp.data.url;			                				
+      });                		
+   }
+});
+</script>    
 {% endblock %}
 
 {% block grayBlock %}
@@ -102,10 +107,10 @@
                         {% if own.completed %}
                         <td><i class="icon-check"></i></td>
                         {% else %}
-                        <td><form id="{{own.task.task_text}}-check" name="checktask" method="POST" action=".">
+                        <td><form id="{{own.task.task_text}}-check" name="{{own.task.task_text}}-checktask" method="POST" action=".">
                             {% csrf_token %}
-                            <input type="hidden" value="{{own.task.task_text}}" id="taskInfo" name="taskInfo"/>
-                         <input type="checkbox" value="option2" id="taskcheck" onClick="submitOnClick('{{own.task.task_text}}-check')" name="check_submit"/>
+                            <input type="hidden" value="{{own.task.task_text}}" id="taskInfo" name="checkInfo"/>
+                            <input type="checkbox" id="check_submit" onClick="submitOnCheckClick('{{own.task.task_text}}-check');" name="check_submit"/>
                         </form>
                         </td>
                         {% endif %}
@@ -132,10 +137,10 @@
                 <div class="row rec_title form-inline">
                     {% for task in topTasks %}
                     <div>
-                        <form id="{{task.task_text}}-form" name="addtask" method="POST" action=".">
+                        <form id="{{task.task_text}}-form" name="recsubmit" method="POST" action=".">
                             {% csrf_token %}
-                            <input type="hidden" value="{{task.task_text}}" id="taskInfo" name="taskInfo"/>
-                            <a id="submitrec" onclick="submitOnClick('{{task.task_text}}-form')" name="recsubmit">
+                            <input type="hidden" value="{{task.task_text}}" id="taskInfo" name="recInfo"/>
+                            <a id="submitrec" onclick="submitOnRecClick('{{task.task_text}}-form');" name="recsubmit">
                                 <div class="rec span1">
                                     <p>{{task.task_text}}</p>
                                 </div>
