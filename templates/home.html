@@ -35,6 +35,12 @@ function submitOnCheckClick(recaddform) {
 }
 </script>
 
+<script type="text/javascript">
+function submitOnTrashClick(recaddform) {
+    document.forms[recaddform].submit();
+}
+</script>
+
 <script>
 FB.api('/me/friends', function(response){
    var friendIDs = new Array();
@@ -105,7 +111,11 @@ FB.api('/me/friends', function(response){
                      {% for own in owns %}
                      <tr>
                         {% if own.completed %}
-                        <td><i class="icon-check"></i></td>
+                        <td><form id="{{own.task.task_text}}-check" name="{{own.task.task_text}}-checktask" method="POST" action=".">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{own.task.task_text}}" id="taskInfo" name="checkInfo"/>
+                            <i class="icon-check" onClick="submitOnCheckClick('{{own.task.task_text}}-check');" name="check_submit"></i>
+                        </form></td>
                         {% else %}
                         <td><form id="{{own.task.task_text}}-check" name="{{own.task.task_text}}-checktask" method="POST" action=".">
                             {% csrf_token %}
@@ -125,6 +135,12 @@ FB.api('/me/friends', function(response){
                             {% for tag in own.task.tags.all %}
                             #{{tag.tag_text}}</br>
                             {% endfor %}</td>
+                            <td><form id="{{own.task.task_text}}-trash" name="{{own.task.task_text}}-trashtask" method="POST" action=".">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{own.task.task_text}}" id="trashInfo" name="trashInfo"/>
+                                <i class="icon-trash" onClick="submitOnTrashClick('{{own.task.task_text}}-trash');" name="trash_submit"></i>
+                            </form></td>
+
                         </tr>
                         {% endfor %}
                     </table>
