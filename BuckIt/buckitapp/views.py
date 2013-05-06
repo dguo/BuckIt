@@ -128,7 +128,7 @@ def login(request):
 					return HttpResponseRedirect('')
 			else:
 				# return an 'invalid login' error message
-				return HttpResponseRedirect('')
+				render_to_response('login.html', {'error_message':"Incorrect user name or password"}, context_instance=RequestContext(request))
 
 		# make a new account
 		if 'create' in request.POST:

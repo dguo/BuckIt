@@ -66,6 +66,7 @@ $(function() {
                 <div class="service span5 offset3">
                     <div id="login">
                         <form class="form" method="POST" action=".">{% csrf_token %}
+                            <label style="color:red;"><strong>{{error_message}}</strong></label>
                             <label for="name">User Name:</label>
                             <input id="name" type="text" name="username"/>
                             <label for="password">Password:</label>
