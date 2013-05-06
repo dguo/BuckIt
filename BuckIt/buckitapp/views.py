@@ -23,7 +23,6 @@ def home(request):
 
 		if request.method == 'POST':
 			
-<<<<<<< HEAD
 			if 'addTask' in request.POST:
 			    # create the new tag task if it doesn't exist already
 			    tag_sub = request.POST['hidden-tags'].lower().split(',')
@@ -55,17 +54,8 @@ def home(request):
 
 			    return HttpResponseRedirect('')
 
-			elif 'check_submit' in request.POST:
-				taskTxt = request.POST['taskInfo']
-				checkedtask = get_object_or_404(Task, task_text=taskTxt)
-				checkedtask.completed = True
-				checkedtask.date_done = datetime.now()
-				checkedtask.save()
-
-				return HttpResponseRedirect('')
-
-			else:
-				taskTxt = request.POST['taskInfo']
+			elif 'recInfo' in request.POST:
+				taskTxt = request.POST['recInfo']
 				addedtask = get_object_or_404(Task, task_text=taskTxt)
 				addedtask.count = addedtask.count + 1
 				addedtask.save()
@@ -73,43 +63,24 @@ def home(request):
 				new_ownership.save()
 
 				return HttpResponseRedirect('')
-=======
-			if 'addTask' in request.POST: 
-				# create the new tag task if it doesn't exist already
-				tag_sub = request.POST['hidden-tags'].lower().split(',')
-				tag_list = set()
-	
-				for tag in tag_sub:
-	
-					new_tag = Tag.objects.filter(tag_text=tag)
-	
-					if len(new_tag) == 1:
-						new_tag = new_tag[0]99
-						tag_list.add(new_tag)
-					else:
-						new_tag = Tag(tag_text=tag)
-						tag_list.add(new_tag)
-						new_tag.save()
-	
-				# create the new task if it doesn't exist already
-				new_task = Task.objects.filter(task_text=request.POST['task'])
-				if len(new_task) == 1:
-					pass
-				else:
-					new_task = Task(task_text=request.POST['task'])
-					new_task.save()
-					for tag in tag_list:
-						new_task.tags.add(tag)
-					new_ownership = Ownership(userProfile=userProfile_obj, task=new_task)
-					new_ownership.save()
-	
+
+			elif 'checkInfo' in request.POST:
+				taskTxt = request.POST['checkInfo']
+				checkedtask = get_object_or_404(Task, task_text=taskTxt)
+				checkedOwn = get_object_or_404(Ownership, task=checkedtask, userProfile=userProfile_obj)
+				checkedOwn.completed = True
+				checkedOwn.date_done = datetime.now()
+				checkedOwn.save()
+
 				return HttpResponseRedirect('')
 			
-			else:
+			elif 'fbid' in request.POST:
 				uid = request.POST['fbid']
 				userProfile_obj.fb_id = uid
 				userProfile_obj.save()
->>>>>>> 53d638eab4dbd79fef2e18dbfe6a3add15e814a6
+
+				return HttpResponseRedirect('')
+
 
 		else:	
 			owns1 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=False).order_by('-date_set')
