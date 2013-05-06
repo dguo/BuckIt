@@ -42,18 +42,29 @@ function submitOnTrashClick(recaddform) {
 </script>
 
 <script>
-FB.api('/me/friends', function(response){
-   var friendIDs = new Array();
-   var friendPics = new Array();
-   for (i = 0; i < response.data.length; i++)
-   {
-       friendIDs[i] = response.data[i].id;
-       picString = '/' + friendIDs[i] + '/picture';
-       FB.api(picString, function(resp){
-          friendPics[i] = resp.data.url;			                				
-      });                		
-   }
-});
+function fb_connect() {
+	login();
+	FB.api('/me/picture', function(response) {
+	   var fbPic = response.data.url;		
+	});
+	FB.api('/me/friends', function(response) {
+	   var friendIDs = '';
+	   var friendPics = '';
+	   for (i = 0; i < response.data.length; i++)
+	   {
+	       friendIDs = friendsIDs + response.data[i].id + ',';
+	       picString = '/' + friendIDs[i] + '/picture';
+	       FB.api(picString, function(resp){
+		  friendPics = friendPics + resp.data.url + ',';			                				
+	      });                		
+	   }
+	});
+	document.getElementById('fbid').value = uid;
+	document.getElementById('fbpic').value = fbPic;
+	document.getElementById('friendids').value = friendIDs;
+	document.getElementById('friendpics').value = friendPics;
+        document.forms['getFBinfo'].submit();
+}
 </script>    
 {% endblock %}
 
@@ -65,13 +76,12 @@ FB.api('/me/friends', function(response){
                     <h1 class="span5">{{name}}</h1>
             </div>
         </div>
-        <form name = "getID" action="." method="POST">
+        <form name = "getFBinfo" action="." method="POST">
         	<input id="fbid" type="hidden" name="facebookid">
-        </form>
-        <script>
-        	document.getElementById('fbid').value = uid;
-        	document.forms['getID'].submit();
-        </script>  	
+        	<input id="fbpic" type="hidden" name="facebookpic">
+        	<input id="friendids" type="hidden" name="facebookfriends">
+        	<input id="friendpics" type="hidden" name="facebookpics">
+        </form>	
     </div>
     
 {% endblock %}
@@ -177,7 +187,7 @@ FB.api('/me/friends', function(response){
                     <div class ="news">
                         <h4>News Feed</h4>
                         <div class="icon-awesome pull-right"><h4>
-                            <button class="login" onclick="login()" title="Click to connect with facebook and update newsfeed"><i class="icon-facebook-sign"></i> CONNECT</button></h4> 
+                            <button class="login" onclick="fb_connect()" title="Click to connect with facebook and update newsfeed"><i class="icon-facebook-sign"></i> CONNECT</button></h4> 
                         </div>
                     </div>
                 </div>

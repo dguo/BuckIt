@@ -20,6 +20,7 @@ class UserProfile(models.Model):
 	user = models.OneToOneField(User)
 	name = models.CharField(max_length=40)
 	fb_id = models.CharField(max_length=300, null=True, default=3)
+	fb_pic = models.CharField(max_length=300, null=True)
 	friends = models.ManyToManyField("self", null=True, blank=True)
 	tasks = models.ManyToManyField(Task, through="Ownership")
 	def __unicode__(self):
