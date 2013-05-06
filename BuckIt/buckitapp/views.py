@@ -68,9 +68,20 @@ def home(request):
 				taskTxt = request.POST['checkInfo']
 				checkedtask = get_object_or_404(Task, task_text=taskTxt)
 				checkedOwn = get_object_or_404(Ownership, task=checkedtask, userProfile=userProfile_obj)
-				checkedOwn.completed = True
-				checkedOwn.date_done = datetime.now()
+				if checkedOwn.completed is False:
+					checkedOwn.completed = True
+					checkedOwn.date_done = datetime.now()
+				else:
+					checkedOwn.completed = False
 				checkedOwn.save()
+
+				return HttpResponseRedirect('')
+
+			elif 'trashInfo' in request.POST:
+				taskTxt = request.POST['trashInfo']
+				checkedtask = get_object_or_404(Task, task_text=taskTxt)
+				checkedOwn = get_object_or_404(Ownership, task=checkedtask, userProfile=userProfile_obj)
+				checkedOwn.delete()
 
 				return HttpResponseRedirect('')
 			
