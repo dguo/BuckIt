@@ -40,50 +40,102 @@ function submitOnTrashClick(recaddform) {
     document.forms[recaddform].submit();
 }
 </script>
-
-<script>
-/*window.fbAsyncInit = function() {
-    login();
-
-
-}
+<script type="text/javascript">
 function fb_connect() {
-    login();
-*///    FB.getLoginStatus(function(response) {
-//        if (response.status === 'connected') {
-//            var uid = response.authResponse.userID;
-//            var accessToken = response.authResponse.accessToken;
-  //          document.getElementById('fbid').value= uid;
-//
-//
-  //          FB.api('/me', function(response) {
-    //           alert('Your name is ' + response.name);
-/*           });
+    document.forms['getFBinfo'].submit();
+};
+</script>
+{% endblock %}
 
-            FB.api('/me/picture', function(response) {
-                var fbPic = response.data.url;
-                document.getElementById('fbpic').value= fbPic;  
-            });
+{% block bodyscripts %}
+       <script>
+       window.fbAsyncInit = function() {
+        // init the FB JS SDK
+        FB.init({
+          appId      : '480528945353541',    // App ID from the app dashboard
+          channelURL : 'buckitapp.herokuapp.com/channel.html',
+          status     : true,                 // Check Facebook Login status
+          cookie     : true,                 // Enable cookies to allow the server to access the session
+          xfbml      : true                  // Look for social plugins on the page
+          oauth      : true
+    });
+    };
+    
+    /* Capture Events */
+    var tmp_userID = '', tmp_signedRequest = '', tmp_expiresIn = '', tmp_accessToken = '';
+    FB.Event.subscribe('auth.login', function(response) {
 
-            FB.api('/me/friends', function(response) {
-             var friendIDs = '';
-             for (i = 0; i < response.data.length; i++)
-             {
-                 friendIDs = friendsIDs + response.data[i].id + ',';                      
-             }
-             document.getElementById('friendids').value = friendIDs;
-         });
-
-        } else if (response.status === 'not_authorized') {
-        // not_authorized
-    } else {
-        // not_logged_in
-    }
+        if (response.authResponse) { userLoggedIn(); }
+    });
+    FB.Event.subscribe('auth.logout', function(response) {
+        /* Some action to perform when the user logs out via the "fb:login-button" displaying "Facebook Logout" on your webpage */
+        userLoggedOut();
+    });
+    FB.getLoginStatus(function(response) {
+        /* This is executed on load of the "App" (your webpage) in the event the user has already logged into FB */
+        if (response.status === 'not_authorized') {
+            /* The user has already logged into FB but not authorized the "App" (your webpage) */
+        }
+        else if (response.status === 'connected') {
+            /* The user has logged into FB and authorized the "App" (your webpage) to get their user information */
+            tmp_userID = response.authResponse.userID;
+            tmp_signedRequest = response.authResponse.signedRequest;
+            tmp_expiresIn = response.authResponse.expiresIn;
+            tmp_accessToken = response.authResponse.accessToken;
+            processUserInformation();
+        }
+    else { /* The user has not yet logged into FB */ }
 });
 
-    document.forms['getFBinfo'].submit();
-};*/
-  //  FB.getLoginStatus()
+    /* Handle Events */
+    function userLoggedIn() {
+        /* Triggered after user successfully logs into Facebook with their account from the "App" (your webpage) */
+        /* Forward to "processUserInformation()" unless something unique needs to be done */
+        processUserInformation();
+    }
+    function userLoggedOut() {
+        /* User has initiated a logout from Facebook using the "fb:login-button" button from the "App" (your webpage) */
+    }
+    function processUserInformation() {
+        /* Get the user's information to put into the webpage since the user is logged into FB and authorized the "App" (your webpage) */
+        FB.api('/me', function(response) {
+            document.getElementById('fbid').value = response.authResponse.userID;
+        });
+
+        FB.api('/me/picture', function(response) {
+            var fbPic = response.data.url;
+            document.getElementById('fbpic').value= fbPic;  
+        });
+
+        FB.api('/me/friends', function(response) {
+           var friendIDs = '';
+           for (i = 0; i < response.data.length; i++)
+           {
+               friendIDs = friendsIDs + response.data[i].id + ',';                      
+           }
+           document.getElementById('friendids').value = friendIDs;
+       });
+
+    };
+
+    function login() {
+      FB.login(function(response) {
+         if (response.authResponse){
+            // logged in
+        } else {
+            // cancelled
+        }
+  });
+  };   
+
+// Load the SDK Asynchronously
+(function(d, s, id){
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
 </script>
 {% endblock %}
 
@@ -211,6 +263,8 @@ function fb_connect() {
                     <div class ="news">
                         <h4>News Feed</h4>
                         <div class="icon-awesome pull-right"><h4>
+
+<fb:login-button autologoutlink='true'></fb:login-button>
                             <button class="login" onclick="fb_connect()" title="Click to connect with facebook and update newsfeed"><i class="icon-facebook-sign"></i> CONNECT</button></h4> 
                         </div>
                     </div>

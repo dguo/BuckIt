@@ -59,40 +59,10 @@
     </head>
 
     <body>
-	<div id = "fb-root"></div>
-	<script>
-	window.fbAsyncInit = function() {
-	    // init the FB JS SDK
-	    FB.init({
-	      appId      : '480528945353541',    // App ID from the app dashboard
-	      channelURL : 'buckitapp.herokuapp.com/channel.html',
-	      status     : true,                 // Check Facebook Login status
-	      cookie     : true,                 // Enable cookies to allow the server to access the session
-	      xfbml      : true                  // Look for social plugins on the page
-	    });
-	};
-	    
-	 function login() {
-	 FB.login(function(response) {
-	    if (response.authResponse){
-	        // logged in
-	    } else {
-	        // cancelled
-	    }
-	 });
-	 };   
-	  
-	  // Load the SDK Asynchronously
-	  (function(d, s, id){
-	     var js, fjs = d.getElementsByTagName(s)[0];
-	     if (d.getElementById(id)) {return;}
-	     js = d.createElement(s); js.id = id;
-	     js.src = "//connect.facebook.net/en_US/all.js";
-	     fjs.parentNode.insertBefore(js, fjs);
-	   }(document, 'script', 'facebook-jssdk'));
-	</script>
-	
-        {% block bodyscripts %}{% endblock %}
+       <div id = "fb-root"></div>
+       <fb:login-button autologoutlink='true'></fb:login-button>
+
+     {% block bodyscripts %}{% endblock %}
         <!-- Header -->
         <div class="container">
             <div class="header row">
