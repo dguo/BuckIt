@@ -42,12 +42,28 @@ function submitOnTrashClick(recaddform) {
 </script>
 
 <script>
+
+function saveUID(uid) {
+     document.getElementById('fbid').value = uid;
+}
+
+function saveFBPic(fbPic) {
+     document.getElementById('fbPic').value = fbPic;
+}
+
+function saveFriendIDs(friendIDs) {
+     document.getElementById('fbid').value = uid;
+}
+
 function fb_connect() {
 	login();
-    var uid, fbPic, friendIDs;
+    var uid; 
+    var fbPic; 
+    var friendIDs;
 	FB.getLoginStatus(function(response) {
 	    if (response.status === 'connected') {
-		uid = response.authResponse.userID;
+		var uid = response.authResponse.userID;
+        saveUID(uid);
 		var accessToken = response.authResponse.accessToken;
 	    } else if (response.status === 'not_authorized') {
 		// not_authorized
@@ -59,23 +75,23 @@ function fb_connect() {
 	FB.api('/me', function(response) {
 	   alert('Your name is ' + response.name);
 	});
+
 	FB.api('/me/picture', function(response) {
-        alert('your picture is' + response.data.url);
-        fbPic = response.data.url;		
+        var fbPic = response.data.url;
+        saveFBPic(fbPic);		
 	});
 	FB.api('/me/friends', function(response) {
-	   friendIDs = '';
+	   var friendIDs = '';
 	   for (i = 0; i < response.data.length; i++)
 	   {
 	       friendIDs = friendsIDs + response.data[i].id + ',';               		
 	   }
+       saveFriendIDs(friendIDs);
 	});
-	document.getElementById('fbid').value = uid;
-	document.getElementById('fbpic').value = fbPic;
-	document.getElementById('friendids').value = friendIDs;
-        document.forms['getFBinfo'].submit();
+
+    document.forms['getFBinfo'].submit();
 }
-</script>    
+</script>
 {% endblock %}
 
 {% block grayBlock %}
