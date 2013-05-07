@@ -116,9 +116,37 @@ def home(request):
 			owns = itertools.chain(owns1, owns2)
 			ownTasks = Ownership.objects.filter(userProfile=userProfile_obj).values('task')
 			topTasks = Task.objects.order_by('-count').exclude(id__in=ownTasks)[0:3]
+			
+			setNews = Ownership.objects.none()
+			doneNews = Ownership.objects.none()
+			for f in userProfile_obj.friends:
+				fset = Ownership.objects.filter(userProfile=f).order_by('-date_set')[:5]
+				fdone = Ownership.objects.filter(userProfile=f).order_by('-date_done')[:5]
+				setNews = itertools.chain(setNews, fset)
+				doneNews = itertools.chain(doneNews, fdone)
+			setList = list(setNews)
+			doneList = list(doneNews)
+			setIndex = 0
+			doneIndex = 0
+			friendNews = []
+			for i in range(10):
+				if (doneIndex >= len(doneList)):
+					if (setIndex >= len(setList)):
+						break
+					else:
+						friendNews.append(setList[setIndex])
+						setIndex = setIndex + 1
+				else:
+					if (setList[setIndex].date_set < doneList[doneIndex].date_done):
+						friendNews.append(setList[setIndex])
+						setIndex = setIndex + 1
+					else:
+						friendNews.append(doneList[doneIndex])
+						doneIndex = doneIndex + 1
+						
 			return render_to_response('home.html',
 			                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin,
-			                          'name':username, 'userpic':userProfile_obj.fb_pic},
+			                          'name':username, 'userpic':userProfile_obj.fb_pic, 'friendNews':friendNews},
 			                          context_instance=RequestContext(request))	
 	
 	# user is not logged in

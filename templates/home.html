@@ -204,15 +204,15 @@ function fb_connect() {
                         </div>
                     </div>
                 </div>
-                {% if newsevents %}
-                {% for event in newsevents%}
+		{% if friendNews %}
+                {% for event in friendNews%}
                 <div class="row">
                     <div class="news">
                         <img src="static/img/portfolio/work1.jpg" alt="">
-                        {% if event.isCompleted %}
-                        <p>{{event.complete_date}}<br>{{event.user}} completed {{event.event}}</p>
+                        {% if event.completed %}
+                        <p>{{event.date_done}}<br>{{event.userProfile}} completed {{event.task}}</p>
                         {% else %}
-                        <p>{{event.complete_date}}<br>{{event.user}} completed {{event.event}}</p>
+                        <p>{{event.date_set}}<br>{{event.userProfile}} completed {{event.task}}</p>
                         {% endif %}
                     </div>
                 </div>
