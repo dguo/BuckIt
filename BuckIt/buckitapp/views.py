@@ -276,7 +276,7 @@ def check_badges(request, groupie):
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)		
 		earned_badges = userProfile_obj.badges.all()
 
-		# Doer of Things
+		# Doer of Things: Complete 10 tasks.
 		try:
 			badge = Badge.objects.get(badge_title="Doer of Things")
 			if badge not in earned_badges:
@@ -287,7 +287,7 @@ def check_badges(request, groupie):
 		except Badge.DoesNotExist:
 			pass
 
-		# Groupie 
+		# Groupie: Add a friend's task.
 		try:
 			badge = Badge.objects.get(badge_title="Groupie")
 			if badge not in earned_badges:
@@ -297,8 +297,22 @@ def check_badges(request, groupie):
 		except Badge.DoesNotExist:
 			pass
 
-		# Sampler
+		# Sampler: Complete tasks with 5 different tags.
+		try:
+			badge = Badge.objects.get(badge_title="Sampler")
+			if badge not in earned_badges:
+				tags = set()
+				completed_tasks = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=True)
+				for task in completed_tasks:
+					task_tags = task.task.tags.all()
+					for tag in task_tags:
+						tags.add(tag)
+				if len(tags) + 1 > 4:
+					userProfile_obj.badges.add(badge)
+					userProfile_obj.save()					
 
+		except Badge.DoesNotExist:
+			pass
 
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))
