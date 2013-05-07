@@ -44,9 +44,10 @@ function submitOnTrashClick(recaddform) {
 <script>
 function fb_connect() {
 	login();
+    var uid, fbPic, friendIDs;
 	FB.getLoginStatus(function(response) {
 	    if (response.status === 'connected') {
-		var uid = response.authResponse.userID;
+		uid = response.authResponse.userID;
 		var accessToken = response.authResponse.accessToken;
 	    } else if (response.status === 'not_authorized') {
 		// not_authorized
@@ -60,10 +61,10 @@ function fb_connect() {
 	});
 	FB.api('/me/picture', function(response) {
         alert('your picture is' + response.data.url);
-	   var fbPic = response.data.url;		
+        fbPic = response.data.url;		
 	});
 	FB.api('/me/friends', function(response) {
-	   var friendIDs = '';
+	   friendIDs = '';
 	   for (i = 0; i < response.data.length; i++)
 	   {
 	       friendIDs = friendsIDs + response.data[i].id + ',';               		
