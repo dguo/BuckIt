@@ -43,51 +43,58 @@ function submitOnTrashClick(recaddform) {
 
 <script>
 
-function saveUID(uid) {
+function saveUID(callback) {
+    FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+            var uid = response.authResponse.userID;
+            var accessToken = response.authResponse.accessToken;
+            callback(uid);
+        } else if (response.status === 'not_authorized') {
+        // not_authorized
+    } else {
+        // not_logged_in
+    }
+});
+};
+function uidReceived(uid) {
      document.getElementById('fbid').value = uid;
-}
+};
 
-function saveFBPic(fbPic) {
+function saveFBPic(callback) {
+    FB.api('/me/picture', function(response) {
+        var fbPic = response.data.url;
+        callback(fbPic);    
+    });
+};
+function fbPicReceived(fbPic) {
      document.getElementById('fbPic').value = fbPic;
-}
+};
 
-function saveFriendIDs(friendIDs) {
+function saveFriendIDs(callback) {
+    FB.api('/me/friends', function(response) {
+       var friendIDs = '';
+       for (i = 0; i < response.data.length; i++)
+       {
+           friendIDs = friendsIDs + response.data[i].id + ',';                      
+       }
+       callback(friendIDs);
+    });
+};
+
+function friendIDsReceived(friendIDs) {
      document.getElementById('fbid').value = uid;
-}
+};
 
 function fb_connect() {
 	login();
-    var uid; 
-    var fbPic; 
-    var friendIDs;
-	FB.getLoginStatus(function(response) {
-	    if (response.status === 'connected') {
-		var uid = response.authResponse.userID;
-        saveUID(uid);
-		var accessToken = response.authResponse.accessToken;
-	    } else if (response.status === 'not_authorized') {
-		// not_authorized
-	    } else {
-		// not_logged_in
-        }
-	});
+    saveUID(uidReceived);
 	
 	FB.api('/me', function(response) {
 	   alert('Your name is ' + response.name);
 	});
 
-	FB.api('/me/picture', function(response) {
-        var fbPic = response.data.url;
-        saveFBPic(fbPic);		
-	});
-	FB.api('/me/friends', function(response) {
-	   var friendIDs = '';
-	   for (i = 0; i < response.data.length; i++)
-	   {
-	       friendIDs = friendsIDs + response.data[i].id + ',';               		
-	   }
-       saveFriendIDs(friendIDs);
-	});
+    saveFBPic(fbPicReceived);
+    saveFriendIDs(friendIDsReceived);
 
     document.forms['getFBinfo'].submit();
 }
