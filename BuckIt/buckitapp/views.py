@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from models import Tag, Task, UserProfile, Ownership
+from models import Badge, Tag, Task, UserProfile, Ownership
 from django.contrib.auth import authenticate 
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout
