@@ -54,11 +54,11 @@ function saveUID(callback) {
     } else {
         // not_logged_in
     }
-});
+    });
 };
+
 function responseReceived(response) {
      document.getElementById('fbid').value = response.authResponse.userID;
-     document.getElementById('fbPic').value = response.data.url;
 };
 
 function saveFBPic(callback) {
