@@ -42,18 +42,23 @@ function submitOnTrashClick(recaddform) {
 </script>
 
 <script>
+/*window.fbAsyncInit = function() {
+    login();
+
+
+}
 function fb_connect() {
     login();
-    FB.getLoginStatus(function(response) {
-        if (response.status === 'connected') {
-            var uid = response.authResponse.userID;
-            var accessToken = response.authResponse.accessToken;
-            document.getElementById('fbid').value= uid;
-
-            
-            FB.api('/me', function(response) {
-               alert('Your name is ' + response.name);
-           });
+*///    FB.getLoginStatus(function(response) {
+//        if (response.status === 'connected') {
+//            var uid = response.authResponse.userID;
+//            var accessToken = response.authResponse.accessToken;
+  //          document.getElementById('fbid').value= uid;
+//
+//
+  //          FB.api('/me', function(response) {
+    //           alert('Your name is ' + response.name);
+/*           });
 
             FB.api('/me/picture', function(response) {
                 var fbPic = response.data.url;
@@ -77,7 +82,8 @@ function fb_connect() {
 });
 
     document.forms['getFBinfo'].submit();
-};
+};*/
+  //  FB.getLoginStatus()
 </script>
 {% endblock %}
 

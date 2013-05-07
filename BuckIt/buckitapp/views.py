@@ -216,6 +216,7 @@ def profile(request, userid):
 		loggedin = True
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 		name = userProfile_obj.name
+		badges = UserProfile.objects.filter(name=newid).values('badges')
 
 		if request.method == 'POST':
 			taskTxt = request.POST['addtaskbutton']
@@ -233,7 +234,7 @@ def profile(request, userid):
 			other_user = get_object_or_404(UserProfile, name=newid)
 			owns = Ownership.objects.filter(userProfile=other_user)
 		return render_to_response('profile.html', 
-		                          {'owns': owns, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
+		                          {'owns': owns, 'badges':badges, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
 		                          context_instance = RequestContext(request))
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))

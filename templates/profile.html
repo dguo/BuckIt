@@ -94,21 +94,13 @@ $(function() {
 <div id="badgecontainer" class="container">
    <div class="row">
     <div class="span10 offset1">
+        {% for badge in badges %}
         <div class="row">
-            <p>Doer Of Things</p>
-            <img src= "/static/img/redicon.png">    
-            <p>Completed 10 tasks</p>
-        </div>
-        <div class ="row">
-            <p>Trendsetter</p>
-            <img src= "/static/img/blueicon.png">
-            <p>Have a friend add one of your tasks</p>
-        </div>
-        <div class ="row">
-            <p>The Sampler</p>
-            <img src ="/static/img/greenicon.png">
-            <p>Completed tasks with 5 different tags</p>
-        </div>  
+            <h5>{{badge.badge_title}}</h5>
+            <img src="{{badge.bad_pic}}">    
+            <p>{{badge.badge_text}}</p>
+        </div> 
+        {% endfor %}
     </div>
 </div>
 </div>
