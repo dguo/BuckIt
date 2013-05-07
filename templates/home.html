@@ -48,7 +48,7 @@ function saveUID(callback) {
         if (response.status === 'connected') {
             var uid = response.authResponse.userID;
             var accessToken = response.authResponse.accessToken;
-            callback(uid);
+            callback(response);
         } else if (response.status === 'not_authorized') {
         // not_authorized
     } else {
@@ -56,8 +56,9 @@ function saveUID(callback) {
     }
 });
 };
-function uidReceived(uid) {
-     document.getElementById('fbid').value = uid;
+function responseReceived(response) {
+     document.getElementById('fbid').value = response.authResponse.userID;
+     document.getElementById('fbPic').value = response.data.url;
 };
 
 function saveFBPic(callback) {
@@ -97,7 +98,7 @@ function fb_connect() {
     saveFriendIDs(friendIDsReceived);
 
     document.forms['getFBinfo'].submit();
-}
+};
 </script>
 {% endblock %}
 
