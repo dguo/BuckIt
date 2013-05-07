@@ -48,17 +48,13 @@ function saveUID(callback) {
         if (response.status === 'connected') {
             var uid = response.authResponse.userID;
             var accessToken = response.authResponse.accessToken;
-            callback(response);
+            document.getElementById('fbid').value= uid;
         } else if (response.status === 'not_authorized') {
         // not_authorized
     } else {
         // not_logged_in
     }
     });
-};
-
-function responseReceived(response) {
-     document.getElementById('fbid').value = response.authResponse.userID;
 };
 
 function saveFBPic(callback) {
