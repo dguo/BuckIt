@@ -55,13 +55,13 @@ function fb_connect() {
 	    }
 	});
 	
-	FB.api('/me' + accessToken, function(response) {
+	FB.api('/me', function(response) {
 	   alert('Your name is ' + response.name);
 	});
-	FB.api('/me/picture' + accessToken, function(response) {
+	FB.api('/me/picture', function(response) {
 	   var fbPic = response.data.url;		
 	});
-	FB.api('/me/friends' + accessToken, function(response) {
+	FB.api('/me/friends', function(response) {
 	   var friendIDs = '';
 	   for (i = 0; i < response.data.length; i++)
 	   {

@@ -51,12 +51,12 @@
     <body>
 	<div id = "fb-root"></div>
 	<script>
-	  window.fbAsyncInit = function() {
+	window.fbAsyncInit = function() {
 	    // init the FB JS SDK
 	    FB.init({
 	      appId      : '480528945353541',    // App ID from the app dashboard
 	      status     : true,                 // Check Facebook Login status
-	      channelURL : '//www.buckitapp.herokuapp.com/channel.html',
+	      channelURL : 'buckitapp.herokuapp.com/channel.html',
 	      cookie     : true,                 // Enable cookies to allow the server to access the session
 	      xfbml      : true                  // Look for social plugins on the page
 	    });
@@ -67,7 +67,7 @@
 	    if (response.authResponse){
 	        // logged in
 	    } else {
-		    // cancelled
+	        // cancelled
 	    }
 	 });
 	 };   
