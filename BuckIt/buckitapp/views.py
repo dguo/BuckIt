@@ -93,7 +93,7 @@ def home(request):
 				fb_friends.pop()
 				while (len(fb_friends) > 0):
 					current_friend = fb_friends.pop()
-					try
+					try:
 						friend = UserProfile.objects.get(fb_id=current_friend)
 						userProfile_obj.friends.add(friend);
 					except ObjectDoesNotExist:
