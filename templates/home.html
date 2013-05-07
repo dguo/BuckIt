@@ -67,7 +67,7 @@ function saveFBPic(callback) {
     });
 };
 function fbPicReceived(fbPic) {
-     document.getElementById('fbPic').value = fbPic;
+     document.getElementById('fbpic').value = fbPic;
 };
 
 function saveFriendIDs(callback) {
@@ -82,22 +82,22 @@ function saveFriendIDs(callback) {
 };
 
 function friendIDsReceived(friendIDs) {
-     document.getElementById('fbid').value = friendIDs;
+     document.getElementById('friendids').value = friendIDs;
 };
 
 function fb_connect() {
-	login();
+    login();
     saveUID(uidReceived);
 	
-	FB.api('/me', function(response) {
-	   alert('Your name is ' + response.name);
-	});
+    FB.api('/me', function(response) {
+	alert('Your name is ' + response.name);
+    });
 
     saveFBPic(fbPicReceived);
     saveFriendIDs(friendIDsReceived);
 
     document.forms['getFBinfo'].submit();
-}
+};
 </script>
 {% endblock %}
 
