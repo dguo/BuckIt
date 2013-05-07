@@ -15,7 +15,7 @@ $(document).ready(function() {
 
     $('#registerbutton').live('click', function(event) {
         $('#register').show();
-        $('#name').focus();
+        $('#username').focus();
         $('#login').hide();
     });
 
@@ -66,14 +66,14 @@ $(function() {
 <div class="container">
     <div class="container profile">
         <div class="row">
-            <a id="loginbutton" href="#">Login</a>
-            <a id="registerbutton" href="#">Register</a>
+            <a id="loginbutton" href="#!">Login</a>
+            <a id="registerbutton" href="#!">Register</a>
         </div>
         <div class="what-we-do container">
             <div class="row">
                 <div class="service span5 offset3">
                     <div id="login">
-                        <form class="form" method="POST" action=".">{% csrf_token %}
+                        <form name="loginform" class="form" method="POST" action=".">{% csrf_token %}
                             <label style="color:red;"><strong>{{loginerror}}</strong></label>
                             <label for="name">User Name:</label>
                             <input id="name" type="text" name="username"/>
@@ -83,7 +83,7 @@ $(function() {
                         </form>
                     </div>
                     <div id="register">
-                        <form class="form" method="POST" action=".">{% csrf_token %}
+                        <form name="registerform" class="form" method="POST" action=".">{% csrf_token %}
                             <label style="color:red;"><strong>{{registererror}}</strong></label>
                             <label for="name">User Name:</label>
                             <input id="name" type="text" name="username"/>
