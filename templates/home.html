@@ -44,13 +44,24 @@ function submitOnTrashClick(recaddform) {
 <script>
 function fb_connect() {
 	login();
-	FB.api('/me', function(response) {
+	FB.getLoginStatus(function(response) {
+	    if (response.status === 'connected') {
+		var uid = response.authResponse.userID;
+		var accessToken = response.authResponse.accessToken;
+	    } else if (response.status === 'not_authorized') {
+		// not_authorized
+	    } else {
+		// not_logged_in
+	    }
+	});
+	
+	FB.api('/me' + accessToken, function(response) {
 	   alert('Your name is ' + response.name);
 	});
-	FB.api('/me/picture', function(response) {
+	FB.api('/me/picture' + accessToken, function(response) {
 	   var fbPic = response.data.url;		
 	});
-	FB.api('/me/friends', function(response) {
+	FB.api('/me/friends' + accessToken, function(response) {
 	   var friendIDs = '';
 	   for (i = 0; i < response.data.length; i++)
 	   {

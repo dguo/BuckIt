@@ -56,30 +56,21 @@
 	    FB.init({
 	      appId      : '480528945353541',    // App ID from the app dashboard
 	      status     : true,                 // Check Facebook Login status
+	      channelURL : '//www.buckitapp.herokuapp.com/channel.html',
 	      cookie     : true,                 // Enable cookies to allow the server to access the session
 	      xfbml      : true                  // Look for social plugins on the page
 	    });
-	    FB.getLoginStatus(function(response) {
-	    if (response.status === 'connected') {
-		var uid = response.authResponse.userID;
-		var accessToken = response.authResponse.accessToken;
-	    } else if (response.status === 'not_authorized') {
-		// not_authorized
-	    } else {
-		// not_logged_in
-	    }
-	    });
 	};
 	    
-	    function login() {
-	    FB.login(function(response) {
-	    	  if (response.authResponse){
-		    // connected
-		} else {
+	 function login() {
+	 FB.login(function(response) {
+	    if (response.authResponse){
+	        // logged in
+	    } else {
 		    // cancelled
-		}
-	    });
-	    }   
+	    }
+	 });
+	 };   
 	  
 	  // Load the SDK Asynchronously
 	  (function(d, s, id){
