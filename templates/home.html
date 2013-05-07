@@ -88,7 +88,7 @@ function friendIDsReceived(friendIDs) {
 
 function fb_connect() {
     login();
-    saveUID(uidReceived);
+    saveUID(responseReceived);
 	
     FB.api('/me', function(response) {
 	alert('Your name is ' + response.name);
