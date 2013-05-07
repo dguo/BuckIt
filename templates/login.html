@@ -5,15 +5,23 @@
 {% block scriptfn %}
 <script type="text/javascript">
 $(document).ready(function() {
+    {% if errorcode == "1" %}
     $('#register').hide();
+    {% elif errorcode == "2" %}
+    $('#login').hide();
+    {% else %}
+    $('#register').hide();
+    {% endif %}
 
     $('#registerbutton').live('click', function(event) {
         $('#register').show();
+        $('#name').focus();
         $('#login').hide();
     });
 
     $('#loginbutton').live('click', function(event) {
         $('#login').show();
+        $('#name').focus();
         $('#register').hide();
     });
 });
@@ -76,6 +84,7 @@ $(function() {
                     </div>
                     <div id="register">
                         <form class="form" method="POST" action=".">{% csrf_token %}
+                            <label style="color:red;"><strong>{{error}}</strong></label>
                             <label for="name">User Name:</label>
                             <input id="name" type="text" name="username"/>
                             <label for="firstname">First Name:</label>

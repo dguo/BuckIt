@@ -143,27 +143,31 @@ def login(request, errorcode=None):
 		# make a new account
 		if 'create' in request.POST:
 			username = request.POST['username']
-			first_name = request.POST['firstname']
-			last_name = request.POST['lastname']
-			password = request.POST['password']
-			name = first_name + ' ' + last_name
 
-			# still need to check if username already exists
-
-			new_user = User.objects.create_user(username, '', password)
-			new_user.save()
-			new_user_profile = UserProfile(user=new_user, name=name)
-			new_user_profile.save()
-			user = authenticate(username=username, password=password)
-			auth_login(request, user)
-			return HttpResponseRedirect('/home')
+			try:
+				User.objects.get(username=username)
+				return HttpResponseRedirect('/login/2/')
+			except:
+				first_name = request.POST['firstname']
+				last_name = request.POST['lastname']
+				password = request.POST['password']
+				name = first_name + ' ' + last_name
+				new_user = User.objects.create_user(username, '', password)
+				new_user.save()
+				new_user_profile = UserProfile(user=new_user, name=name)
+				new_user_profile.save()
+				user = authenticate(username=username, password=password)
+				auth_login(request, user)
+				return HttpResponseRedirect('/home')
 	else:
 		if errorcode == "1":
 			error = "Incorrect username or password."
+		elif errorcode =="2":
+			error = "Username already taken. Please choose another one."
 		else:
 			error = ""
 
-		return render_to_response('login.html', {'error':error}, context_instance=RequestContext(request))
+		return render_to_response('login.html', {'error':error, 'errorcode':errorcode}, context_instance=RequestContext(request))
 
 def profile(request, userid):
 	newid = userid.replace('_',' ')
