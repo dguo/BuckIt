@@ -42,8 +42,8 @@ function submitOnTrashClick(recaddform) {
 </script>
 
 <script>
-
-function saveUID() {
+function fb_connect() {
+    login();
     FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
             var uid = response.authResponse.userID;
@@ -55,16 +55,16 @@ function saveUID() {
         // not_logged_in
     }
     });
-};
+	
+    FB.api('/me', function(response) {
+	alert('Your name is ' + response.name);
+    });
 
-function saveFBPic() {
     FB.api('/me/picture', function(response) {
         var fbPic = response.data.url;
         document.getElementById('fbpic').value= fbPic;  
     });
-};
 
-function saveFriendIDs() {
     FB.api('/me/friends', function(response) {
        var friendIDs = '';
        for (i = 0; i < response.data.length; i++)
@@ -73,18 +73,6 @@ function saveFriendIDs() {
        }
        document.getElementById('friendids').value = friendIDs;
     });
-};
-
-function fb_connect() {
-    login();
-    saveUID();
-	
-    FB.api('/me', function(response) {
-	alert('Your name is ' + response.name);
-    });
-
-    saveFBPic();
-    saveFriendIDs();
 
     document.forms['getFBinfo'].submit();
 };
