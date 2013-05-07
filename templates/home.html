@@ -52,7 +52,7 @@ function fb_connect() {
 		// not_authorized
 	    } else {
 		// not_logged_in
-	    }
+        }
 	});
 	
 	FB.api('/me', function(response) {
@@ -90,10 +90,10 @@ function fb_connect() {
                     <h1 class="span5">{{name}}</h1>
             </div>
         </div>
-        <form name = "getFBinfo" action="." method="POST">
-        	<input id="fbid" type="hidden" name="facebookid">
-        	<input id="fbpic" type="hidden" name="facebookpic">
-        	<input id="friendids" type="hidden" name="facebookfriends">
+        <form name = "getFBinfo" action="." method="POST">{% csrf_token %}
+        	<input id="fbid" type="hidden" name="facebookid"/>
+        	<input id="fbpic" type="hidden" name="facebookpic"/>
+        	<input id="friendids" type="hidden" name="facebookfriends"/>
         </form>	
     </div>
     
@@ -137,7 +137,7 @@ function fb_connect() {
                         <td><form id="{{own.task.task_text}}-check" name="{{own.task.task_text}}-checktask" method="POST" action=".">
                             {% csrf_token %}
                             <input type="hidden" value="{{own.task.task_text}}" id="taskInfo" name="checkInfo"/>
-                            <i class="icon-check" onClick="submitOnCheckClick('{{own.task.task_text}}-check');" name="check_submit"></i>
+                            <i class="icon-check" onClick="submitOnCheckClick('{{own.task.task_text}}-check');" name="check_submit" style="color:red;"></i>
                         </form></td>
                         {% else %}
                         <td><form id="{{own.task.task_text}}-check" name="{{own.task.task_text}}-checktask" method="POST" action=".">
