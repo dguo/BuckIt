@@ -119,7 +119,7 @@ def home(request):
 			
 			setNews = Ownership.objects.none()
 			doneNews = Ownership.objects.none()
-			for f in userProfile_obj.friends:
+			for f in userProfile_obj.friends.all():
 				fset = Ownership.objects.filter(userProfile=f).order_by('-date_set')[:5]
 				fdone = Ownership.objects.filter(userProfile=f).order_by('-date_done')[:5]
 				setNews = itertools.chain(setNews, fset)
