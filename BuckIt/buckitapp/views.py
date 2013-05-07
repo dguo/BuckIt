@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 import itertools
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
@@ -85,9 +86,18 @@ def home(request):
 
 				return HttpResponseRedirect('')
 			
-			elif 'fbid' in request.POST:
-				uid = request.POST['fbid']
-				userProfile_obj.fb_id = uid
+			elif 'getFBinfo' in request.POST:			
+				userProfile_obj.fb_id = request.POST['facebookid']
+				userProfile_obj.fb_pic = request.POST['facebookpic']
+				fb_friends = request.POST['facebookfriends'].split(',')
+				fb_friends.pop()
+				while (len(fb_friends) > 0):
+					current_friend = fb_friends.pop()
+					try
+						friend = UserProfile.objects.get(fb_id=current_friend)
+						userProfile_obj.friends.add(friend);
+					except ObjectDoesNotExist:
+						pass	
 				userProfile_obj.save()
 
 				return HttpResponseRedirect('')
