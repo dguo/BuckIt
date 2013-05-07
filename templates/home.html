@@ -80,7 +80,9 @@ function fb_connect() {
     <div class="page-title">
         <div class="container">
             <div class="row buckit_blue">
-                    <h1 class="span1"><i class="icon-user page-title-icon"></i></h1>
+                    <h1 class="span1">
+                        <img src="{{userpic}}"/>
+                        <i class="icon-user page-title-icon"></i></h1>
                     <h1 class="span5">{{name}}</h1>
             </div>
         </div>
@@ -220,4 +222,11 @@ function fb_connect() {
         </div>
     </div>
 </div>
+{% endblock %}
+{% block delete_account %}
+<form method="POST" action="." id="deleteform" name="deleteform"> 
+    {% csrf_token %}
+    <h5>Click <a name="delete_account" onClick="confirmation()">here</a> to delete account.</h5>
+    <input type="hidden" id="delete_account" name="delete_account"/>
+</form>
 {% endblock %}

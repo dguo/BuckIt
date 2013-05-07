@@ -102,6 +102,13 @@ def home(request):
 
 				return HttpResponseRedirect('')
 
+			elif 'delete_account' in request.POST:
+				currentUser = request.user
+				currentUser.is_active = False
+				currentUser.save()
+				logout(request)
+				return HttpResponseRedirect('/login/')
+
 
 		else:	
 			owns1 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=False).order_by('-date_set')
@@ -111,7 +118,7 @@ def home(request):
 			topTasks = Task.objects.order_by('-count').exclude(id__in=ownTasks)[0:3]
 			return render_to_response('home.html',
 			                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin,
-			                          'name':username},
+			                          'name':username, 'userpic':userProfile_obj.fb_pic},
 			                          context_instance=RequestContext(request))	
 	
 	# user is not logged in
@@ -161,13 +168,17 @@ def login(request, errorcode=None):
 				return HttpResponseRedirect('/home')
 	else:
 		if errorcode == "1":
-			error = "Incorrect username or password."
+			loginerror = "Incorrect username or password."
+			registererror = ""
 		elif errorcode =="2":
-			error = "Username already taken. Please choose another one."
+			loginerror = ""
+			registererror = "Username already taken. Please choose another one."
 		else:
+			loginerror = ""
+			registererror = ""
 			error = ""
 
-		return render_to_response('login.html', {'error':error, 'errorcode':errorcode}, context_instance=RequestContext(request))
+		return render_to_response('login.html', {'loginerror':loginerror, 'registererror':registererror, 'errorcode':errorcode}, context_instance=RequestContext(request))
 
 def profile(request, userid):
 	newid = userid.replace('_',' ')
