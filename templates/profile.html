@@ -5,24 +5,15 @@
 {% block scriptfn %}
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#newscontainer').hide();
     $('#badgecontainer').hide();
-
-    $('#newsbutton').live('click', function(event) {
-        $('#newscontainer').show();
-        $('#listcontainer').hide();
-        $('#badgecontainer').hide();
-    });
 
     $('#listbutton').live('click', function(event) {
         $('#listcontainer').show();
-        $('#newscontainer').hide();
         $('#badgecontainer').hide();
     });
 
     $('#badgebutton').live('click', function(event) {
         $('#badgecontainer').show();
-        $('#newscontainer').hide();
         $('#listcontainer').hide();
     });
 });
@@ -51,7 +42,6 @@ $(function() {
 {% block Content %}
 <div class="container profile">
 	<div class="row">
-		<a id="newsbutton" href="#">Newsfeed</a>
 		<a id="listbutton" href="#">List</a>
 		<a id="badgebutton" href="#">Badges</a>
 	</div>
@@ -95,40 +85,6 @@ $(function() {
     </div>
 </div>
 
-<div id="newscontainer" class="container">
-   <div class="row">
-    <div class="span10 offset1">
-        <div class="row">
-            <div class="newsfeed">
-                <div class ="row">
-                    <div class ="news">
-                        <h4>News Feed</h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="news">
-                        <img src="static/img/portfolio/work1.jpg" alt="">
-                        <p>May 3, 2012<br> Molly Nacey added "Go to Hoagie Haven"</p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="news">
-                        <img src="static/img/portfolio/work1.jpg" alt="">
-                        <p>March 6, 2013<br> Molly Nacey completed "Enroll in COS 333"</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="news">
-                        <img src="static/img/portfolio/work1.jpg" alt="">
-                        <p>March 6, 2013<br> Molly Nacey completed "Join BuckIt"</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
 <div id="badgecontainer" class="container">
    <div class="row">
     <div class="span10 offset1">
