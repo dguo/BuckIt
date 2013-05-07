@@ -3,6 +3,12 @@ import datetime
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+class Badge(models.Model):
+	badge_title = models.CharField(max_length=50)
+	badge_text = models.CharField(max_length=50)
+	bad_pic = models.CharField(max_length=300)
+	def __unicode__(self):
+		return self.badge_title
 
 class Tag(models.Model):
 	tag_text = models.CharField(max_length=40)
@@ -23,6 +29,7 @@ class UserProfile(models.Model):
 	fb_pic = models.CharField(max_length=300, null=True)
 	friends = models.ManyToManyField("self", null=True, blank=True)
 	tasks = models.ManyToManyField(Task, through="Ownership")
+	badges = models.ManyToManyField(Badge)
 	def __unicode__(self):
 		return self.name
 
