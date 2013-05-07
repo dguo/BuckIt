@@ -118,7 +118,7 @@ def home(request):
 	else:
 		return HttpResponseRedirect('/login')
 
-def login(request):
+def login(request, errorcode=None):
 	logout(request)
 	print "in login"
 	if request.method == 'POST':
@@ -135,10 +135,10 @@ def login(request):
 						return HttpResponseRedirect('/home')
 				else:
 					# Return a 'disabled account' error message
-					return HttpResponseRedirect('')
+					return HttpResponseRedirect('/login/1/')
 			else:
 				# return an 'invalid login' error message
-				render_to_response('login.html', {'error_message':"Incorrect user name or password"}, context_instance=RequestContext(request))
+				return HttpResponseRedirect('/login/1/')
 
 		# make a new account
 		if 'create' in request.POST:
@@ -157,8 +157,13 @@ def login(request):
 			user = authenticate(username=username, password=password)
 			auth_login(request, user)
 			return HttpResponseRedirect('/home')
+	else:
+		if errorcode == "1":
+			error = "Incorrect username or password."
+		else:
+			error = ""
 
-	return render_to_response('login.html', context_instance=RequestContext(request))
+		return render_to_response('login.html', {'error':error}, context_instance=RequestContext(request))
 
 def profile(request, userid):
 	newid = userid.replace('_',' ')
