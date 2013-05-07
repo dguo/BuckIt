@@ -49,30 +49,32 @@ function fb_connect() {
             var uid = response.authResponse.userID;
             var accessToken = response.authResponse.accessToken;
             document.getElementById('fbid').value= uid;
+
+            
+            FB.api('/me', function(response) {
+               alert('Your name is ' + response.name);
+           });
+
+            FB.api('/me/picture', function(response) {
+                var fbPic = response.data.url;
+                document.getElementById('fbpic').value= fbPic;  
+            });
+
+            FB.api('/me/friends', function(response) {
+             var friendIDs = '';
+             for (i = 0; i < response.data.length; i++)
+             {
+                 friendIDs = friendsIDs + response.data[i].id + ',';                      
+             }
+             document.getElementById('friendids').value = friendIDs;
+         });
+
         } else if (response.status === 'not_authorized') {
         // not_authorized
     } else {
         // not_logged_in
     }
-    });
-	
-    FB.api('/me', function(response) {
-	alert('Your name is ' + response.name);
-    });
-
-    FB.api('/me/picture', function(response) {
-        var fbPic = response.data.url;
-        document.getElementById('fbpic').value= fbPic;  
-    });
-
-    FB.api('/me/friends', function(response) {
-       var friendIDs = '';
-       for (i = 0; i < response.data.length; i++)
-       {
-           friendIDs = friendsIDs + response.data[i].id + ',';                      
-       }
-       document.getElementById('friendids').value = friendIDs;
-    });
+});
 
     document.forms['getFBinfo'].submit();
 };
