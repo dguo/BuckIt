@@ -73,17 +73,23 @@
 	};
 	    
 	 function login() {
-	 	 FB.login(function(response) {});
+	 FB.login(function(response) {
+	    if (response.authResponse){
+	        // logged in
+	    } else {
+	        // cancelled
+	    }
+	 });
 	 };   
 	  
 	  // Load the SDK Asynchronously
-	  (function(d){
-	   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-	   if (d.getElementById(id)) {return;}
-	   js = d.createElement('script'); js.id = id; js.async = true;
-	   js.src = "//connect.facebook.net/en_US/all.js";
-	   ref.parentNode.insertBefore(js, ref);
-	  }(document));
+	  (function(d, s, id){
+	     var js, fjs = d.getElementsByTagName(s)[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement(s); js.id = id;
+	     js.src = "//connect.facebook.net/en_US/all.js";
+	     fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
 	</script>
 	
         {% block bodyscripts %}{% endblock %}
@@ -103,7 +109,7 @@
                             </h1>
                             <div class="container span1 offset4">
                                 <h1 id="writeButton">
-                                    <a class="taskbutton" href="/home/"><i class="icon-check"></i></a>
+                                    <a class="taskbutton" href="/home/"><i class="icon-edit"></i></a>
                                 </h1>
                             </div>
                             <div class="nav-collapse collapse">

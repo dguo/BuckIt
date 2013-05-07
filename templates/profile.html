@@ -74,8 +74,14 @@ $(function() {
                         #{{tag.tag_text}}</br>
                         {% endfor %}</td>
                         {% if not profIsUser %}
-                        <td><form name="addtask" method="POST" action=".">{% csrf_token %}
-                        <button name="addtaskbutton" type="submit" value="{{own.task.task_text}}">+</button></form> </td>
+                           {% if own.task in owntasks %}
+                           <td><i class="icon-ok" style="color:red;"></i></td>
+                           {% else %}
+                           <td><form name="addtask" method="POST" action=".">{% csrf_token %}
+                            <button name="addtaskbutton" type="submit" value="{{own.task.task_text}}">+</button></form> </td>
+                            {% endif %}
+                        {% else %}
+                        <td></td>
                         {% endif %}
                     </tr>
                     {% endfor %}

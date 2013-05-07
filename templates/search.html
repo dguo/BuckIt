@@ -39,16 +39,23 @@ $(function() {
                     <td>Add Counts</td>
                     <td>Tags</td>
                 </tr>
+                {% for task in tasks %}
                 <tr>
-                 {% for task in tasks %}
-                 <td>{{task.task_text}}</td>
-                 <td>{{task.count}}</td>
-                 <td>
+                   <td>{{task.task_text}}</td>
+                   <td>{{task.count}}</td>
+                   <td>
                     {% for tag in task.tags.all %}
                     #{{tag.tag_text}}</br>
-                    {% endfor %}</td>
-                    <td><form name="addtask" method="POST" action=".">{% csrf_token %}
-                        <button name="addtaskbutton" type="submit" value="{{task.task_text}}">+</button></form> </td>
+                    {% endfor %}
+                    </td>
+                    {% if task in owntasks %}
+                    <td><i class="icon-ok" style="color:red;"></i></td>
+                    {% else %}
+                    <td>
+                       <form name="addtask" method="POST" action=".">{% csrf_token %}
+                        <button name="addtaskbutton" type="submit" value="{{task.task_text}}">+</button></form> 
+                    </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </table>

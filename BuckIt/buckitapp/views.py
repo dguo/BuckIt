@@ -216,6 +216,7 @@ def profile(request, userid):
 		loggedin = True
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 		name = userProfile_obj.name
+		owntasks = userProfile_obj.tasks.all()
 
 		if request.method == 'POST':
 			taskTxt = request.POST['addtaskbutton']
@@ -231,8 +232,9 @@ def profile(request, userid):
 		else:
 			other_user = get_object_or_404(UserProfile, name=newid)
 			owns = Ownership.objects.filter(userProfile=other_user)
+			
 		return render_to_response('profile.html', 
-		                          {'owns': owns, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
+		                          {'owns': owns, 'owntasks':owntasks, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
 		                          context_instance = RequestContext(request))
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))
@@ -243,8 +245,8 @@ def search(request):
 		name = userProfile_obj.name
 		loggedin = True
 
-		ownTasks = Ownership.objects.filter(userProfile=userProfile_obj).values('task')
-		tasks = Task.objects.order_by('count').exclude(id__in=ownTasks)
+		owntasks = userProfile_obj.tasks.all()
+		tasks = Task.objects.order_by('count')
 
 		if request.method == 'POST':
 			if 'searchTag' in request.POST:
@@ -263,6 +265,6 @@ def search(request):
 				new_ownership.save()
 
 		return render_to_response('search.html',
-			{'tasks': tasks, 'loggedin':loggedin, 'name':name}, context_instance=RequestContext(request))
+			{'tasks': tasks, 'owntasks':owntasks, 'loggedin':loggedin, 'name':name}, context_instance=RequestContext(request))
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))
