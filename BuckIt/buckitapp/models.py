@@ -26,10 +26,10 @@ class UserProfile(models.Model):
 	user = models.OneToOneField(User)
 	name = models.CharField(max_length=40)
 	fb_id = models.CharField(max_length=300, null=True, default=3)
-	fb_pic = models.CharField(max_length=300, null=True)
+	fb_pic = models.CharField(max_length=300, null=True, blank=True)
 	friends = models.ManyToManyField("self", null=True, blank=True)
 	tasks = models.ManyToManyField(Task, through="Ownership")
-	badges = models.ManyToManyField(Badge)
+	badges = models.ManyToManyField(Badge, null=True, blank=True)
 	def __unicode__(self):
 		return self.name
 

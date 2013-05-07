@@ -72,6 +72,7 @@ def home(request):
 				if checkedOwn.completed is False:
 					checkedOwn.completed = True
 					checkedOwn.date_done = datetime.now()
+					check_badges(request, groupie=False)
 				else:
 					checkedOwn.completed = False
 				checkedOwn.save()
@@ -155,7 +156,6 @@ def home(request):
 
 def login(request, errorcode=None):
 	logout(request)
-	print "in login"
 	if request.method == 'POST':
 
 		# login the user; return an error message if applicable
@@ -216,7 +216,6 @@ def profile(request, userid):
 		loggedin = True
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 		name = userProfile_obj.name
-		owntasks = userProfile_obj.tasks.all()
 
 		if request.method == 'POST':
 			taskTxt = request.POST['addtaskbutton']
@@ -225,6 +224,7 @@ def profile(request, userid):
 			addedtask.save()
 			new_ownership = Ownership(userProfile=userProfile_obj, task=addedtask)
 			new_ownership.save()
+			check_badges(request, groupie=True)
 
 		if newid == name:
 			profIsUser = True
@@ -232,9 +232,8 @@ def profile(request, userid):
 		else:
 			other_user = get_object_or_404(UserProfile, name=newid)
 			owns = Ownership.objects.filter(userProfile=other_user)
-			
 		return render_to_response('profile.html', 
-		                          {'owns': owns, 'owntasks':owntasks, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
+		                          {'owns': owns, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
 		                          context_instance = RequestContext(request))
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))
@@ -245,8 +244,8 @@ def search(request):
 		name = userProfile_obj.name
 		loggedin = True
 
-		owntasks = userProfile_obj.tasks.all()
-		tasks = Task.objects.order_by('count')
+		ownTasks = Ownership.objects.filter(userProfile=userProfile_obj).values('task')
+		tasks = Task.objects.order_by('count').exclude(id__in=ownTasks)
 
 		if request.method == 'POST':
 			if 'searchTag' in request.POST:
@@ -265,6 +264,40 @@ def search(request):
 				new_ownership.save()
 
 		return render_to_response('search.html',
-			{'tasks': tasks, 'owntasks':owntasks, 'loggedin':loggedin, 'name':name}, context_instance=RequestContext(request))
+			{'tasks': tasks, 'loggedin':loggedin, 'name':name}, context_instance=RequestContext(request))
+	else:
+		return render_to_response('login.html', context_instance=RequestContext(request))
+
+
+def check_badges(request, groupie):
+
+	if request.user.is_authenticated():
+		userProfile_obj = get_object_or_404(UserProfile, user=request.user)		
+		earned_badges = userProfile_obj.badges.all()
+
+		# Doer of Things
+		try:
+			badge = Badge.objects.get(badge_title="Doer of Things")
+			if badge not in earned_badges:
+				completed_tasks = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=True)
+				if len(completed_tasks) + 1 > 9:
+					userProfile_obj.badges.add(badge)
+					userProfile_obj.save()	
+		except Badge.DoesNotExist:
+			pass
+
+		# Groupie 
+		try:
+			badge = Badge.objects.get(badge_title="Groupie")
+			if badge not in earned_badges:
+				if groupie:
+					userProfile_obj.badges.add(badge)
+					userProfile_obj.save()	
+		except Badge.DoesNotExist:
+			pass
+
+		# Sampler
+
+
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))
