@@ -216,7 +216,8 @@ def profile(request, userid):
 		loggedin = True
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 		name = userProfile_obj.name
-		badges = UserProfile.objects.filter(name=newid).values('badges')
+		profUser = get_object_or_404(UserProfile, name=newid)
+		badges = profUser.badges.all()
 
 		if request.method == 'POST':
 			taskTxt = request.POST['addtaskbutton']
