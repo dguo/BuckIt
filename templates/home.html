@@ -81,8 +81,12 @@ function fb_connect() {
         <div class="container">
             <div class="row buckit_blue">
                     <h1 class="span1">
+                        {% if userpic == None %}
+                        <i class="icon-user page-title-icon"></i>
+                        {% else %}
                         <img src="{{userpic}}"/>
-                        <i class="icon-user page-title-icon"></i></h1>
+                        {% endif %}
+                    </h1>
                     <h1 class="span5">{{name}}</h1>
             </div>
         </div>
