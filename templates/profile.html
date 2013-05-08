@@ -31,7 +31,13 @@ $(function() {
 <div class="page-title">
     <div class="container">
         <div class="row buckit_blue">
-            <h1 class="span1"><i class="icon-user page-title-icon"></i></h1>
+            <h1 class="span1">
+                {% if profPic == None %}
+                <i class="icon-user page-title-icon"></i>
+                {% else %}
+                <img id="profpic" src='{{profPic}}'/>
+                {% endif %}
+            </h1>
             <h1 class="span5">{{ nameprof }}</h1>
         </div>
     </div>

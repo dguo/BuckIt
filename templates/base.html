@@ -17,6 +17,10 @@
         <link rel="stylesheet" href="/static/css/font-awesome.css">
         <link rel="stylesheet" href="/static/css/style.css">
         <link rel="stylesheet" href="/static/css/bootstrap-tagmanager.css">
+        <link rel="stylesheet" href="/static/css/bootstrap-notify.css">
+        <link href="/static/css/styles/alert-bangtidy.css" rel="stylesheet">
+        <link href="/static/css/styles/alert-blackgloss.css" rel="stylesheet">
+        <link href="/static/css/styles/alert-notification-animations.css" rel="stylesheet">
 
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -42,6 +46,7 @@
         <script src="/static/prettyPhoto/js/jquery.prettyPhoto.js"></script>
         <script src="/static/js/scripts.js"></script>
         <script src="/static/js/bootstrap-tagmanager.js"></script>
+        <script src="/static/js/bootstrap-notify.js"></script>
 
         {% block jsSources %}{% endblock %}
 
@@ -55,6 +60,17 @@
         }
         </script>
         {% block scriptfn %}{% endblock %}
+        
+        {% if messages %}
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $('.center').notify({
+                message: {text: 'Congratulations! You earned a new badge!'},
+                type: 'blackgloss'
+            }).show();
+        });
+        </script>
+        {% endif %}
 
     </head>
 
@@ -114,6 +130,7 @@
 
         <!-- Content -->
         {% block Content %}{% endblock %}
+        <div class="notifications center"></div>
 
         <!-- Footer -->
         <footer>
