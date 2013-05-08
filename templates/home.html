@@ -46,9 +46,7 @@ function fb_connect() {
     document.forms['getFBinfo'].submit();
 };
 </script>
-{% endblock %}
 
-{% block bodyscripts %}
        <div id = "fb-root"></div>
        <script>
        window.fbAsyncInit = function() {
@@ -61,13 +59,20 @@ function fb_connect() {
           xfbml      : true                  // Look for social plugins on the page
       });
 
-        FB.api('/me', function(user) {
-            if (user) {
-            document.getElementById('fbid').value = user.id;
-            document.getElementById('fbpic').value = 'https://graph.facebook.com/' + user.id + '/picture';
-            var image = document.getElementById('profpic');
-            image.src = 'https://graph.facebook.com/' + user.id + '/picture';
-        }
+        FB.Event.subscribe('auth.authResponseChange', function(response) {
+            if (response.status === 'connected') {
+                FB.api('/me', function(user) {
+                    if (user) {
+                        document.getElementById('fbid').value = user.id;
+                        document.getElementById('fbpic').value = 'https://graph.facebook.com/' + user.id + '/picture';
+                        var image = document.getElementById('profpic');
+                        image.src = 'https://graph.facebook.com/' + user.id + '/picture';
+                    }
+                })
+            }
+            else {
+                FB.login();
+            }
         });
 
   /*      FB.api('/me/friends', function(response) {
@@ -89,11 +94,9 @@ function fb_connect() {
   js = d.createElement(s); js.id = id;
   js.src = "//connect.facebook.net/en_US/all.js";
   fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-
-
-}; 
+}(document, 'script', 'facebook-jssdk')); 
 </script>
+<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
 {% endblock %}
 
 {% block grayBlock %}
