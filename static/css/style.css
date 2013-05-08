@@ -305,7 +305,11 @@ a .rec {
 }
 .profile a {
     padding: 10px 10px;
-    width: 10%;
+    display: block;
+    float: left;
+    width: 55px;
+    margin: 5px;
+    margin-bottom: 15px;
     background: #2c6bff;
     color: #fff;
     font-style: italic;
