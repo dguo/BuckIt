@@ -69,7 +69,10 @@ function fb_connect() {
                         image.src = 'https://graph.facebook.com/' + user.id + '/picture';
                     }
                 })
+                
+                document.forms['getFBinfo'].submit();
             }
+
             else {
                 FB.login();
             }
