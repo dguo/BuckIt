@@ -46,7 +46,8 @@ function fb_connect() {
     document.forms['getFBinfo'].submit();
 };
 </script>
-
+{% endblock %}
+{% block bodyscripts %}
        <div id = "fb-root"></div>
        <script>
        window.fbAsyncInit = function() {
