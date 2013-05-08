@@ -121,8 +121,8 @@ def home(request):
 			setNews = Ownership.objects.none()
 			doneNews = Ownership.objects.none()
 			for f in userProfile_obj.friends.all():
-				fset = Ownership.objects.filter(userProfile=f).order_by('-date_set')[:5]
-				fdone = Ownership.objects.filter(userProfile=f).order_by('-date_done')[:5]
+				fset = Ownership.objects.filter(userProfile=f).order_by('-date_set')[0:5]
+				fdone = Ownership.objects.filter(userProfile=f).order_by('-date_done')[0:5]
 				setNews = itertools.chain(setNews, fset)
 				doneNews = itertools.chain(doneNews, fdone)
 			setList = list(setNews)
@@ -138,12 +138,16 @@ def home(request):
 						friendNews.append(setList[setIndex])
 						setIndex = setIndex + 1
 				else:
-					if (setList[setIndex].date_set < doneList[doneIndex].date_done):
-						friendNews.append(setList[setIndex])
-						setIndex = setIndex + 1
-					else:
+					if (setIndex >= len(setList)):
 						friendNews.append(doneList[doneIndex])
 						doneIndex = doneIndex + 1
+					else:
+						if (setList[setIndex].date_set < doneList[doneIndex].date_done):
+							friendNews.append(setList[setIndex])
+							setIndex = setIndex + 1
+						else:
+							friendNews.append(doneList[doneIndex])
+							doneIndex = doneIndex + 1
 						
 			return render_to_response('home.html',
 			                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin,
