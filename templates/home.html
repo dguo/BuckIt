@@ -42,6 +42,7 @@ function submitOnTrashClick(recaddform) {
 </script>
 <script type="text/javascript">
 function fb_connect() {
+    login();
     document.forms['getFBinfo'].submit();
 };
 </script>
@@ -58,17 +59,26 @@ function fb_connect() {
           status     : true,                 // Check Facebook Login status
           cookie     : true,                 // Enable cookies to allow the server to access the session
           xfbml      : true                  // Look for social plugins on the page
+      });
+
+        FB.api('/me', function(user) {
+            if (user) {
+            document.getElementById('fbid').value = user.id;
+            document.getElementById('fbpic').value = 'https://graph.facebook.com/' + user.id + '/picture';
+            var image = document.getElementById('profpic');
+            image.src = 'https://graph.facebook.com/' + user.id + '/picture';
+        }
         });
 
-        FB.Event.subscribe('auth.login', function(response) {
-            FB.getLoginStatus(function(response) {
-
-                if (response.status=='connected') {
-                    processUserInformation();
-                }
-            });
-        })
-
+  /*      FB.api('/me/friends', function(response) {
+           var friendIDs = '';
+           for (i = 0; i < response.data.length; i++)
+           {
+               friendIDs = friendsIDs + response.data[i].id + ',';                      
+           }
+           document.getElementById('friendids').value = friendIDs;
+       });
+*/
     };
     
 
@@ -81,25 +91,6 @@ function fb_connect() {
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-function processUserInformation() {
-    /* Get the user's information to put into the webpage since the user is logged into FB and authorized the "App" (your webpage) */
-    FB.api('/me', function(response) {
-        document.getElementById('fbid').value = response.authResponse.userID;
-    });
-
-    FB.api('/me/picture', function(response) {
-        var fbPic = response.data.url;
-        document.getElementById('fbpic').value= fbPic;  
-    });
-
-    FB.api('/me/friends', function(response) {
-     var friendIDs = '';
-     for (i = 0; i < response.data.length; i++)
-     {
-         friendIDs = friendsIDs + response.data[i].id + ',';                      
-     }
-     document.getElementById('friendids').value = friendIDs;
- });
 
 }; 
 </script>
@@ -113,7 +104,7 @@ function processUserInformation() {
                         {% if userpic == None %}
                         <i class="icon-user page-title-icon"></i>
                         {% else %}
-                        <img src="{{userpic}}"/>
+                        <img id="profpic" src="{{userpic}}"/>
                         {% endif %}
                     </h1>
                     <h1 class="span5">{{name}}</h1>
