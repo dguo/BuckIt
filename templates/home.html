@@ -61,6 +61,7 @@ function fb_connect() {
 
         FB.Event.subscribe('auth.authResponseChange', function(response) {
             if (response.status === 'connected') {
+                testAPI();
                 FB.api('/me', function(user) {
                     if (user) {
                         document.getElementById('fbid').value = user.id;
@@ -69,7 +70,7 @@ function fb_connect() {
                         image.src = 'https://graph.facebook.com/' + user.id + '/picture';
                     }
                 })
-                
+
                 document.forms['getFBinfo'].submit();
             }
 
@@ -77,6 +78,12 @@ function fb_connect() {
                 FB.login();
             }
         });
+        function testAPI() {
+            console.log('Welcome!  Fetching your information.... ');
+            FB.api('/me', function(response) {
+              console.log('Good to see you, ' + response.name + '.');
+          });
+        }
 
   /*      FB.api('/me/friends', function(response) {
            var friendIDs = '';
