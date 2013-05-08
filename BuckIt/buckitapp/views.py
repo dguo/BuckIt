@@ -11,13 +11,18 @@ from django.core.exceptions import ObjectDoesNotExist
 import itertools, operator
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.contrib import messages
 
 def home(request):
+	storage = messages.get_messages(request)
+	storage.used = True
+
 	loggedin = False
 
 	if request.user.is_authenticated():
 
 		loggedin = True
+		
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 
 		username = userProfile_obj.name
@@ -72,12 +77,15 @@ def home(request):
 				if checkedOwn.completed is False:
 					checkedOwn.completed = True
 					checkedOwn.date_done = datetime.now()
+					badge_count = userProfile_obj.badges.count()
 					check_badges(request, groupie=False)
+					if (userProfile_obj.badges.count() > badge_count):
+						messages.info(request, "1")
 				else:
 					checkedOwn.completed = False
 				checkedOwn.save()
 
-				return HttpResponseRedirect('')
+				return HttpResponseRedirect(request.path)
 
 			elif 'trashInfo' in request.POST:
 				taskTxt = request.POST['trashInfo']
@@ -167,6 +175,8 @@ def home(request):
 
 def login(request, errorcode=None):
 	logout(request)
+	storage = messages.get_messages(request)
+	storage.used = True
 	if request.method == 'POST':
 
 		# login the user; return an error message if applicable
@@ -220,6 +230,9 @@ def login(request, errorcode=None):
 		return render_to_response('login.html', {'loginerror':loginerror, 'registererror':registererror, 'errorcode':errorcode}, context_instance=RequestContext(request))
 
 def profile(request, userid):
+	storage = messages.get_messages(request)
+	storage.used = True
+
 	newid = userid.replace('_',' ')
 
 	profIsUser = False
@@ -228,6 +241,7 @@ def profile(request, userid):
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 		name = userProfile_obj.name
 		profUser = get_object_or_404(UserProfile, name=newid)
+		profPic = profUser.fb_pic
 		badges = profUser.badges.all()
 		owntasks = userProfile_obj.tasks.all()
 
@@ -238,7 +252,11 @@ def profile(request, userid):
 			addedtask.save()
 			new_ownership = Ownership(userProfile=userProfile_obj, task=addedtask)
 			new_ownership.save()
+			badge_count = userProfile_obj.badges.count()
 			check_badges(request, groupie=True)
+			if (userProfile_obj.badges.count() > badge_count):
+				messages.info(request, "You earned a badge!")
+			HttpResponseRedirect(request.path)
 
 		if newid == name:
 			profIsUser = True
@@ -247,12 +265,15 @@ def profile(request, userid):
 			other_user = get_object_or_404(UserProfile, name=newid)
 			owns = Ownership.objects.filter(userProfile=other_user)
 		return render_to_response('profile.html', 
-		                          {'owns': owns, 'owntasks':owntasks, 'badges':badges, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
+		                          {'owns': owns, 'owntasks':owntasks, 'profPic':profUser.fb_pic, 'badges':badges, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
 		                          context_instance = RequestContext(request))
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))
 
 def search(request):
+	storage = messages.get_messages(request)
+	storage.used = True
+
 	if request.user.is_authenticated():
 		userProfile_obj = get_object_or_404(UserProfile, user=request.user)
 		name = userProfile_obj.name
