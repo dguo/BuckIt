@@ -280,7 +280,7 @@ def search(request):
 		loggedin = True
 
 		ownTasks = userProfile_obj.tasks.all()
-		tasks = Task.objects.order_by('count')
+		tasks = Task.objects.order_by('-count')
 
 		if request.method == 'POST':
 			if 'searchTag' in request.POST:
