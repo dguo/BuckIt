@@ -298,22 +298,6 @@ a .rec {
     line-height: 24px;
 }
 
-.newsfeed .news a {
-    padding: 5px 22px;
-    background: #2c6bff;
-    color: #fff;
-    font-style: italic;
-    text-decoration: none;
-    -moz-box-shadow:
-        0 1px 25px 0 rgba(0,0,0,.05) inset,
-        0 -1px 25px 0 rgba(0,0,0,.05) inset;
-    -webkit-box-shadow:
-        0 1px 25px 0 rgba(0,0,0,.05) inset,
-        0 -1px 25px 0 rgba(0,0,0,.05) inset;
-    box-shadow:
-        0 1px 25px 0 rgba(0,0,0,.05) inset,
-        0 -1px 25px 0 rgba(0,0,0,.05) inset;
-}
 
 /* ----- Profile -------- */
 .profile {

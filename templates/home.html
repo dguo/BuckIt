@@ -50,7 +50,7 @@ function fb_connect() {
 {% block bodyscripts %}
        <div id = "fb-root"></div>
        <script>
-       window.fbAsyncInit = function() {
+    /*   window.fbAsyncInit = function() {
         // init the FB JS SDK
         FB.init({
           appId      : '480528945353541',    // App ID from the app dashboard
@@ -59,9 +59,9 @@ function fb_connect() {
           cookie     : true,                 // Enable cookies to allow the server to access the session
           xfbml      : true                  // Look for social plugins on the page
       });
-
-        FB.Event.subscribe('auth.authResponseChange', function(response) {
-            if (response.status === 'connected') {
+*/
+    /*    FB.Event.subscribe('auth.authResponseChange', function(response) {
+            if (response.status == 'connected') {
                 testAPI();
                 FB.api('/me', function(user) {
                     if (user) {
@@ -70,7 +70,7 @@ function fb_connect() {
                         var image = document.getElementById('profpic');
                         image.src = 'https://graph.facebook.com/' + user.id + '/picture';
                     }
-                })
+                });
 
                 document.forms['getFBinfo'].submit();
             }
@@ -78,7 +78,7 @@ function fb_connect() {
             else {
                 FB.login();
             }
-        });
+        });/*
 
   /*      FB.api('/me/friends', function(response) {
            var friendIDs = '';
@@ -89,11 +89,11 @@ function fb_connect() {
            document.getElementById('friendids').value = friendIDs;
        });
 */
-    };
+ //   };
     
 
 // Load the SDK Asynchronously
-(function(d, s, id){
+/*(function(d, s, id){
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
   js = d.createElement(s); js.id = id;
@@ -107,9 +107,8 @@ function testAPI() {
       console.log('Good to see you, ' + response.name + '.');
   });
 }
-
+*/
 </script>
-<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
 {% endblock %}
 
 {% block grayBlock %}
@@ -242,15 +241,15 @@ function testAPI() {
                         </div>
                     </div>
                 </div>
-		{% if friendNews %}
+                {% if friendNews %}
                 {% for event in friendNews%}
                 <div class="row">
                     <div class="news">
-                        <img src="static/img/portfolio/work1.jpg" alt="">
+                        <img src="{{event.userProfile.fb_pic}}" style="margin-right: 10px;">
                         {% if event.completed %}
-                        <p>{{event.date_done}}<br>{{event.userProfile}} completed {{event.task}}</p>
+                        <p>{{event.date_done}}<br><a href="/profile/{{event.userProfile.name.split|join:'_'}}/">{{event.userProfile}}</a> completed {{event.task}}</p>
                         {% else %}
-                        <p>{{event.date_set}}<br>{{event.userProfile}} completed {{event.task}}</p>
+                        <p>{{event.date_set}}<br><a href="/profile/{{event.userProfile.name.split|join:'_'}}/">{{event.userProfile}}</a> added {{event.task}}</p>
                         {% endif %}
                     </div>
                 </div>

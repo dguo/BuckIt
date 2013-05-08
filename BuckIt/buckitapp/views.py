@@ -8,7 +8,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-import itertools
+import itertools, operator
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
@@ -121,16 +121,21 @@ def home(request):
 			setNews = Ownership.objects.none()
 			doneNews = Ownership.objects.none()
 			for f in userProfile_obj.friends.all():
-				fset = Ownership.objects.filter(userProfile=f).order_by('-date_set')[0:5]
-				fdone = Ownership.objects.filter(userProfile=f).order_by('-date_done')[0:5]
+				fset = Ownership.objects.filter(userProfile=f).filter(completed=False)[0:5]
+				fdone = Ownership.objects.filter(userProfile=f).filter(completed=True)[0:5]
 				setNews = itertools.chain(setNews, fset)
 				doneNews = itertools.chain(doneNews, fdone)
+			
 			setList = list(setNews)
+			setList = sorted(setList, key=operator.attrgetter('date_set'), reverse=True)
+
 			doneList = list(doneNews)
+			doneList = sorted(doneList, key=operator.attrgetter('date_done'), reverse=True)
+
 			setIndex = 0
 			doneIndex = 0
 			friendNews = []
-			for i in range(10):
+			for i in range(5):
 				if (doneIndex >= len(doneList)):
 					if (setIndex >= len(setList)):
 						break
@@ -142,13 +147,15 @@ def home(request):
 						friendNews.append(doneList[doneIndex])
 						doneIndex = doneIndex + 1
 					else:
-						if (setList[setIndex].date_set < doneList[doneIndex].date_done):
+						if (setList[setIndex].date_set > doneList[doneIndex].date_done):
 							friendNews.append(setList[setIndex])
 							setIndex = setIndex + 1
 						else:
 							friendNews.append(doneList[doneIndex])
 							doneIndex = doneIndex + 1
-						
+
+			for i in friendNews:
+				print i.task.task_text
 			return render_to_response('home.html',
 			                          {'topTasks':topTasks, 'owns':owns, 'loggedin':loggedin,
 			                          'name':username, 'userpic':userProfile_obj.fb_pic, 'friendNews':friendNews},
@@ -222,6 +229,7 @@ def profile(request, userid):
 		name = userProfile_obj.name
 		profUser = get_object_or_404(UserProfile, name=newid)
 		badges = profUser.badges.all()
+		owntasks = userProfile_obj.tasks.all()
 
 		if request.method == 'POST':
 			taskTxt = request.POST['addtaskbutton']
@@ -239,7 +247,7 @@ def profile(request, userid):
 			other_user = get_object_or_404(UserProfile, name=newid)
 			owns = Ownership.objects.filter(userProfile=other_user)
 		return render_to_response('profile.html', 
-		                          {'owns': owns, 'badges':badges, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
+		                          {'owns': owns, 'owntasks':owntasks, 'badges':badges, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
 		                          context_instance = RequestContext(request))
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))
@@ -250,8 +258,8 @@ def search(request):
 		name = userProfile_obj.name
 		loggedin = True
 
-		ownTasks = Ownership.objects.filter(userProfile=userProfile_obj).values('task')
-		tasks = Task.objects.order_by('count').exclude(id__in=ownTasks)
+		ownTasks = userProfile_obj.tasks.all()
+		tasks = Task.objects.order_by('count')
 
 		if request.method == 'POST':
 			if 'searchTag' in request.POST:
@@ -270,7 +278,7 @@ def search(request):
 				new_ownership.save()
 
 		return render_to_response('search.html',
-			{'tasks': tasks, 'loggedin':loggedin, 'name':name}, context_instance=RequestContext(request))
+			{'tasks': tasks, 'loggedin':loggedin, 'name':name, 'owntasks':ownTasks}, context_instance=RequestContext(request))
 	else:
 		return render_to_response('login.html', context_instance=RequestContext(request))
 
