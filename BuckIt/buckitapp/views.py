@@ -40,15 +40,16 @@ def home(request):
 
 			    for tag in alltags:
 
-			    	new_tag = Tag.objects.filter(tag_text=tag)
+			    	if tag != "":
+			    		new_tag = Tag.objects.filter(tag_text=tag)
 
-			    	if len(new_tag) == 1:
-			    		new_tag = new_tag[0]
-			    		tag_list.add(new_tag)
-			    	else:
-			    		new_tag = Tag(tag_text=tag)
-			    		tag_list.add(new_tag)
-			    		new_tag.save()
+			    		if len(new_tag) == 1:
+			    			new_tag = new_tag[0]
+			    			tag_list.add(new_tag)
+			    		else:
+			    			new_tag = Tag(tag_text=tag)
+			    			tag_list.add(new_tag)
+			    			new_tag.save()
 
 			    # create the new task if it doesn't exist already
 			    new_task = Task.objects.filter(task_text=request.POST['task'])

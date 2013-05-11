@@ -9,7 +9,7 @@ $(function() {
         preventSubmitOnEnter: false,
         typeahead: true,
         typeaheadAjaxSource: null,
-        typeaheadSource: ["Princeton", "Family", "Friends"],
+        typeaheadSource: ["Princeton", "Family", "Friends", "School", "Travel"],
         blinkBGColor_1: '#FFFF9C',
         blinkBGColor_2: '#CDE69C',
     });
@@ -146,7 +146,7 @@ function testAPI() {
                     <div class="task-form">
                         <form name="taskform" class="form-inline" method="post" action=".">{% csrf_token %}
                             <input id="name" type="text" name="task" placeholder="Add a new task..."/>
-                            <input type="text" name="tags" placeholder="Add tags..." class="tagManager"/>
+                            <input type="text" id="tags" name="tags" placeholder="Add tags..." class="tagManager"/>
                             <button type="submit" name="addTask"> + </button>
                         </form>
                     </div>
