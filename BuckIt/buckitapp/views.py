@@ -32,9 +32,13 @@ def home(request):
 			if 'addTask' in request.POST:
 			    # create the new tag task if it doesn't exist already
 			    tag_sub = request.POST['hidden-tags'].lower().split(',')
+			    tagbox_sub = request.POST['tags'].lower().split(',')
+			    
+			    alltags = itertools.chain(tag_sub,tagbox_sub)
+
 			    tag_list = set()
 
-			    for tag in tag_sub:
+			    for tag in alltags:
 
 			    	new_tag = Tag.objects.filter(tag_text=tag)
 
