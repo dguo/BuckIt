@@ -1,6 +1,7 @@
 # Django settings for BuckIt project.
 
 import os
+import dj_database_url
 
 PWD = os.path.dirname(os.path.realpath(__file__))
 
@@ -15,8 +16,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.abspath(os.path.join(PWD, '..', 'store.db')),                      # Or path to database file if using sqlite3.
+        'ENGINE': '',#django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '',#os.path.abspath(os.path.join(PWD, '..', 'store.db')),                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -81,8 +82,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
-
-LOGIN_URL = '/login/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'lb!3p6z=b34f%*4d3b-k0-6oi=oe*2&amp;glz6782haz%q$t#ud-@'
@@ -159,3 +158,6 @@ LOGGING = {
         },
     }
 }
+
+DATABASES['default'] = dj_database_url.config()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
