@@ -1,6 +1,8 @@
 Django==1.5.1
 distribute==0.6.31
 dj-database-url==0.2.1
+-e git://github.com/pythonforfacebook/django-facebook.git@8b03ab2a706078377837728e99750ab1011e2c84#egg=django4facebook-dev
+facebook-sdk==0.4.0
 gunicorn==0.17.4
 psycopg2==2.4.5
 south==0.7.6
