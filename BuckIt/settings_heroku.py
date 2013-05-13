@@ -1,5 +1,5 @@
 # Django settings for BuckIt project.
-
+from django.template.defaultfilters import slugify
 import os
 import dj_database_url
 
@@ -101,7 +101,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_facebook.middleware.FacebookMiddleware',
 )
 
 ROOT_URLCONF = 'BuckIt.urls'
@@ -128,24 +127,25 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'BuckIt.buckitapp',
-    'south',
-    'django_facebook'
+    'social_auth'
 )
 
 FACEBOOK_APP_ID = '480528945353541'
-FACEBOOK_SECRET_KEY = 'db169f373ccf8a10e855f8b6ef99eb22'
-
-FACEBOOK_SCOPE = []
-
-FACEBOOK_DEBUG_TOKEN = ''
-FACEBOOK_DEBUG_UID = ''
-FACEBOOK_DEBUG_COOKIE = ''
-FACEBOOK_DEBUG_SIGNEDREQ = ''
+FACEBOOK_API_SECRET = 'db169f373ccf8a10e855f8b6ef99eb22'
 
 AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.facebook.FacebookBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'django_facebook.auth.FacebookProfileBackend',
     )
+
+SOCIAL_AUTH_ENABLED_BACKENDS = ('facebook',)
+
+SOCIAL_AUTH_USER_MODEL = 'buckitapp.UserProfile'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'
+LOGIN_ERROR_URL = '/login/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

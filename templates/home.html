@@ -42,17 +42,15 @@ function submitOnTrashClick(recaddform) {
 </script>
 <script type="text/javascript">
 function login() {
-    alert('got here');
     FB.login();
     document.forms['getFBinfo'].submit();
 };
 </script>
-
-{% load facebook %}
-{% facebook_init %}
-{% endfacebook %}
 {% endblock %}
 
+{% block bodyscripts %}
+
+{% endblock %}
 
 {% block grayBlock %}
     <div class="page-title">
@@ -74,8 +72,6 @@ function login() {
         	<input id="friendids" type="hidden" name="facebookfriends"/>
         </form>	
     </div>
-    <fb:login-button show-faces="false" width="200" max-rows="1"
-  scope="{% facebook_scope %}"></fb:login-button>
     
 {% endblock %}
 
@@ -182,7 +178,7 @@ function login() {
                         <div class="icon-awesome pull-right"><h4>
 
 
-                            <button class="login" onclick="login()" title="Click to connect with facebook and update newsfeed"><i class="icon-facebook-sign"></i> CONNECT</button></h4> 
+                            <button class="login" title="Click to connect with facebook and update newsfeed" onclick="window.location='/associate/facebook/';"><i class="icon-facebook-sign"></i> CONNECT</button></h4> 
                         </div>
                     </div>
                 </div>
@@ -218,5 +214,5 @@ function login() {
 {% endblock %}
 
 {% block fbstuff %}
-{% facebook_load %}
+
 {% endblock %}

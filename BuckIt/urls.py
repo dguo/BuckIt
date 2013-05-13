@@ -21,3 +21,7 @@ urlpatterns = patterns('BuckIt.buckitapp.views',
     url(r'^profile/(?P<userid>\w+)/$', 'profile'),
     url(r'^search/$', 'search'),
 )
+
+urlpatterns += patterns('',
+    url(r'', include('social_auth.urls')),
+)
