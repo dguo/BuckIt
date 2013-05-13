@@ -41,75 +41,18 @@ function submitOnTrashClick(recaddform) {
 }
 </script>
 <script type="text/javascript">
-function fb_connect() {
+function login() {
+    alert('got here');
     FB.login();
     document.forms['getFBinfo'].submit();
 };
 </script>
+
+{% load facebook %}
+{% facebook_init %}
+{% endfacebook %}
 {% endblock %}
-{% block bodyscripts %}
-       <div id = "fb-root"></div>
-       <script>
-    /*   window.fbAsyncInit = function() {
-        // init the FB JS SDK
-        FB.init({
-          appId      : '480528945353541',    // App ID from the app dashboard
-          channelURL : 'buckitapp.herokuapp.com/channel.html',
-          status     : true,                 // Check Facebook Login status
-          cookie     : true,                 // Enable cookies to allow the server to access the session
-          xfbml      : true                  // Look for social plugins on the page
-      });
-*/
-    /*    FB.Event.subscribe('auth.authResponseChange', function(response) {
-            if (response.status == 'connected') {
-                testAPI();
-                FB.api('/me', function(user) {
-                    if (user) {
-                        document.getElementById('fbid').value = user.id;
-                        document.getElementById('fbpic').value = 'https://graph.facebook.com/' + user.id + '/picture';
-                        var image = document.getElementById('profpic');
-                        image.src = 'https://graph.facebook.com/' + user.id + '/picture';
-                    }
-                });
 
-                document.forms['getFBinfo'].submit();
-            }
-
-            else {
-                FB.login();
-            }
-        });/*
-
-  /*      FB.api('/me/friends', function(response) {
-           var friendIDs = '';
-           for (i = 0; i < response.data.length; i++)
-           {
-               friendIDs = friendsIDs + response.data[i].id + ',';                      
-           }
-           document.getElementById('friendids').value = friendIDs;
-       });
-*/
- //   };
-    
-
-// Load the SDK Asynchronously
-/*(function(d, s, id){
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk')); 
-
-function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-      console.log('Good to see you, ' + response.name + '.');
-  });
-}
-*/
-</script>
-{% endblock %}
 
 {% block grayBlock %}
     <div class="page-title">
@@ -131,6 +74,8 @@ function testAPI() {
         	<input id="friendids" type="hidden" name="facebookfriends"/>
         </form>	
     </div>
+    <fb:login-button show-faces="false" width="200" max-rows="1"
+  scope="{% facebook_scope %}"></fb:login-button>
     
 {% endblock %}
 
@@ -237,7 +182,7 @@ function testAPI() {
                         <div class="icon-awesome pull-right"><h4>
 
 
-                            <button class="login" onclick="fb_connect()" title="Click to connect with facebook and update newsfeed"><i class="icon-facebook-sign"></i> CONNECT</button></h4> 
+                            <button class="login" onclick="login()" title="Click to connect with facebook and update newsfeed"><i class="icon-facebook-sign"></i> CONNECT</button></h4> 
                         </div>
                     </div>
                 </div>
@@ -270,4 +215,8 @@ function testAPI() {
     <h5>Click <a name="delete_account" onClick="confirmation()">here</a> to delete account.</h5>
     <input type="hidden" id="delete_account" name="delete_account"/>
 </form>
+{% endblock %}
+
+{% block fbstuff %}
+{% facebook_load %}
 {% endblock %}

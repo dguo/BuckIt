@@ -101,7 +101,7 @@ def home(request):
 				return HttpResponseRedirect('')
 			
 			elif 'facebookid' in request.POST:			
-				userProfile_obj.fb_id = request.POST['facebookid']
+				userProfile_obj.fb_id = request.facebook.uid
 				userProfile_obj.fb_pic = request.POST['facebookpic']
 				fb_friends = request.POST['facebookfriends'].split(',')
 				fb_friends.pop()

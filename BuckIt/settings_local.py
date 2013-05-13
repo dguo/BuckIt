@@ -100,6 +100,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_facebook.middleware.FacebookMiddleware',
 )
 
 ROOT_URLCONF = 'BuckIt.urls'
@@ -126,8 +127,24 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'BuckIt.buckitapp',
-    'south'
+    'south',
+    'django_facebook'
 )
+
+FACEBOOK_APP_ID = '480528945353541'
+FACEBOOK_SECRET_KEY = 'db169f373ccf8a10e855f8b6ef99eb22'
+
+FACEBOOK_SCOPE = []
+
+FACEBOOK_DEBUG_TOKEN = ''
+FACEBOOK_DEBUG_UID = ''
+FACEBOOK_DEBUG_COOKIE = ''
+FACEBOOK_DEBUG_SIGNEDREQ = ''
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_facebook.auth.FacebookProfileBackend',
+    )
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
