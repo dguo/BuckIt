@@ -101,6 +101,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_auth.middleware.SocialAuthExceptionMiddleware',
 )
 
 ROOT_URLCONF = 'BuckIt.urls'
@@ -137,8 +138,6 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.facebook.FacebookBackend',
     'django.contrib.auth.backends.ModelBackend',
     )
-
-SOCIAL_AUTH_ENABLED_BACKENDS = ('facebook',)
 
 SOCIAL_AUTH_USER_MODEL = 'buckitapp.UserProfile'
 
