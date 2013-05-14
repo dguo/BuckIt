@@ -128,7 +128,6 @@ def home(request):
 						fb_id = friend['id'].encode('utf-8')
 						f = UserProfile.get(fb_id=fb_id)
 						userProfile_obj.friends.add(f)
-						userProfile_obj.save()
 					except:
 						pass
 			except:
