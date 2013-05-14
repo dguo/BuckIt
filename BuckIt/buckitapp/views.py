@@ -99,22 +99,6 @@ def home(request):
 				checkedOwn.delete()
 
 				return HttpResponseRedirect('')
-			
-		#	elif 'facebookid' in request.POST:			
-		#		userProfile_obj.fb_id = request.user.social_auth.uid
-				#userProfile_obj.fb_pic = request.user.get_profile()
-				#fb_friends = request.POST['facebookfriends'].split(',')
-				#fb_friends.pop()
-				#while (len(fb_friends) > 0):
-			#		current_friend = fb_friends.pop()
-			#		try:
-			#			friend = UserProfile.objects.get(fb_id=current_friend)
-		#				userProfile_obj.friends.add(friend)
-	#				except ObjectDoesNotExist:
-#						pass	
-	#			userProfile_obj.save()
-
-				return HttpResponseRedirect('/search/')
 
 			elif 'delete_account' in request.POST:
 				currentUser = request.user
@@ -127,7 +111,7 @@ def home(request):
 		else:
 
 			try:
-				social_auth = User_social_auths.objects.get(username=request.user.username)
+				social_auth = request.user.social_auth.get(provider='facebook')
 				userProfile_obj.fb_id = social_auth.uid
 				userProfile_obj.fb_pic = "http://graph.facebook.com/" + social_auth.uid + "/picture"
 				userProfile_obj.save()
