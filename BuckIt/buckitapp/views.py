@@ -8,11 +8,10 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-import itertools, operator
+import itertools, operator, json, urllib2
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib import messages
-from django.utils import simplejson as json
 
 def home(request):
 	storage = messages.get_messages(request)
@@ -112,12 +111,20 @@ def home(request):
 		else:
 
 			try:
+
+				graph = facebook.GraphAPI(social_auth.extra_data['access_token'])
+				user = graph.get_object("me")
+				friends = graph.get_connections(user["id"], "friends")
+
 				social_auth = request.user.social_auth.get(provider='facebook')
 				userProfile_obj.fb_id = social_auth.uid
-				userProfile_obj.fb_pic = "http://graph.facebook.com/" + social_auth.uid + "/picture"
+				userProfile_obj.fb_pic = "http://graph.facebook.com/" + user["id"] + "/picture"
+				
+
 				friendsurl = "https://graph.facebook.com/" + social_auth.uid + "/friends?access_token=" + social_auth.extra_data['access_token']
-				friendJson = urllib2.urlopen(friendslist)
+				friendJson = urllib2.urlopen(friendsurl)
 				friendDict = json.load(friendJson)
+				
 				for friend in friendDict:
 					try:
 						f = UserProfile.get(fb_id=friendDict[friend])
