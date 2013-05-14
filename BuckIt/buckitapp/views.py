@@ -12,6 +12,7 @@ import itertools, operator
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib import messages
+from django.utils import simplejson as json
 
 def home(request):
 	storage = messages.get_messages(request)
@@ -114,6 +115,14 @@ def home(request):
 				social_auth = request.user.social_auth.get(provider='facebook')
 				userProfile_obj.fb_id = social_auth.uid
 				userProfile_obj.fb_pic = "http://graph.facebook.com/" + social_auth.uid + "/picture"
+				friendslist = "https://graph.facebook.com/" + social_auth.uid + "/friends?access_token=" + social_auth.extra_data['access_token']
+				friendDict = json.load(friendslist)
+				for friend in friendDict:
+					try:
+						f = UserProfile.get(fb_id=friendDict[friend])
+						userProfile_obj.friends.add(f)
+					except:
+						pass
 				userProfile_obj.save()
 			except:
 				pass
