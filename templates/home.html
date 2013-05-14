@@ -40,6 +40,13 @@ function submitOnTrashClick(recaddform) {
     document.forms[recaddform].submit();
 }
 </script>
+
+<script type="text/javascript">
+function fbClick() {
+    window.location="/{% url 'socialauth_begin' 'facebook' %}";
+}
+</script>
+
 <script type="text/javascript">
 function login() {
     FB.login();
@@ -178,7 +185,7 @@ function login() {
                         <div class="icon-awesome pull-right"><h4>
 
 
-                            <button class="login" title="Click to connect with facebook and update newsfeed" onclick="window.location='/{% url \'socialauth_begin\' \'facebook\' %}';"><i class="icon-facebook-sign"></i> CONNECT</button></h4> 
+                            <button class="login" title="Click to connect with facebook and update newsfeed" onclick="fbClick()"><i class="icon-facebook-sign"></i> CONNECT</button></h4> 
                         </div>
                     </div>
                 </div>
