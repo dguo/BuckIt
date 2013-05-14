@@ -115,7 +115,7 @@ def home(request):
 				social_auth = request.user.social_auth.get(provider='facebook')
 				userProfile_obj.fb_id = social_auth.uid
 				userProfile_obj.fb_pic = "http://graph.facebook.com/" + social_auth.uid + "/picture"
-				
+				userProfile_obj.save()
 
 				friendsurl = "https://graph.facebook.com/" + social_auth.uid + "/friends?access_token=" + social_auth.extra_data['access_token']
 				friendJson = urllib2.urlopen(friendsurl)
@@ -124,13 +124,12 @@ def home(request):
 
 				for friend in friendDict:
 					try:
-						return HttpResponseRedirect('/search/')
 						fb_id = friend['id'].encode('utf-8')
 						f = UserProfile.get(fb_id=fb_id)
 						userProfile_obj.friends.add(f)
+						userProfile_obj.save()
 					except:
 						pass
-				userProfile_obj.save()
 			except:
 				pass
 
