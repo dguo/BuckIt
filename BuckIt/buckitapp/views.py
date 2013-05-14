@@ -115,8 +115,9 @@ def home(request):
 				social_auth = request.user.social_auth.get(provider='facebook')
 				userProfile_obj.fb_id = social_auth.uid
 				userProfile_obj.fb_pic = "http://graph.facebook.com/" + social_auth.uid + "/picture"
-				friendslist = "https://graph.facebook.com/" + social_auth.uid + "/friends?access_token=" + social_auth.extra_data['access_token']
-				friendDict = json.load(friendslist)
+				friendsurl = "https://graph.facebook.com/" + social_auth.uid + "/friends?access_token=" + social_auth.extra_data['access_token']
+				friendJson = urllib2.urlopen(friendslist)
+				friendDict = json.load(friendJson)
 				for friend in friendDict:
 					try:
 						f = UserProfile.get(fb_id=friendDict[friend])
