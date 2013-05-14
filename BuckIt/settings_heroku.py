@@ -145,6 +145,10 @@ LOGIN_ERROR_URL = '/'
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
 
+FACEBOOK_EXTRA_DATA = [
+    ('access_token', 'access_token')
+]
+
 SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
 SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
 SOCIAL_AUTH_BACKEND_ERROR_URL = '/home/'

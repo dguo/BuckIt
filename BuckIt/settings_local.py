@@ -138,6 +138,10 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     )
 
+FACEBOOK_EXTRA_DATA = [
+    ('access_token', 'access_token')
+]
+
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL = '/'
