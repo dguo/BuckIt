@@ -183,7 +183,7 @@ def home(request):
 	
 	# user is not logged in
 	else:
-		return HttpResponseRedirect('/login')
+		return HttpResponseRedirect('/login/')
 
 def login(request, errorcode=None):
 	logout(request)
@@ -280,7 +280,7 @@ def profile(request, userid):
 		                          {'owns': owns, 'owntasks':owntasks, 'profPic':profUser.fb_pic, 'badges':badges, 'loggedin':loggedin, 'name':name, 'nameprof':newid, 'profIsUser':profIsUser}, 
 		                          context_instance = RequestContext(request))
 	else:
-		return render_to_response('login.html', context_instance=RequestContext(request))
+		return HttpResponseRedirect('/login/')
 
 def search(request):
 	storage = messages.get_messages(request)
@@ -313,7 +313,7 @@ def search(request):
 		return render_to_response('search.html',
 			{'tasks': tasks, 'loggedin':loggedin, 'name':name, 'owntasks':ownTasks}, context_instance=RequestContext(request))
 	else:
-		return render_to_response('login.html', context_instance=RequestContext(request))
+		return HttpResponseRedirect('/login/')
 
 
 def check_badges(request, groupie):
@@ -361,4 +361,4 @@ def check_badges(request, groupie):
 			pass
 
 	else:
-		return render_to_response('login.html', context_instance=RequestContext(request))
+		return HttpResponseRedirect('/login/')

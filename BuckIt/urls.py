@@ -18,7 +18,7 @@ urlpatterns = patterns('BuckIt.buckitapp.views',
     url(r'^login/(?P<errorcode>\d+)/$', 'login'),
     url(r'^login/$', 'login'),
     url(r'^home/$', 'home'),
-    url(r'^profile/(?P<userid>\w+)/$', 'profile'),
+    url(r'^profile/(?P<userid>[\w]*)/$', 'profile'),
     url(r'^search/$', 'search'),
 )
 
