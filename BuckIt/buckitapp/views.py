@@ -100,8 +100,8 @@ def home(request):
 
 				return HttpResponseRedirect('')
 			
-			elif 'facebookid' in request.POST:			
-				userProfile_obj.fb_id = request.user.social_auth.uid
+		#	elif 'facebookid' in request.POST:			
+		#		userProfile_obj.fb_id = request.user.social_auth.uid
 				#userProfile_obj.fb_pic = request.user.get_profile()
 				#fb_friends = request.POST['facebookfriends'].split(',')
 				#fb_friends.pop()
@@ -114,7 +114,7 @@ def home(request):
 #						pass	
 	#			userProfile_obj.save()
 
-				return HttpResponseRedirect('')
+				return HttpResponseRedirect('/search/')
 
 			elif 'delete_account' in request.POST:
 				currentUser = request.user
@@ -124,7 +124,16 @@ def home(request):
 				return HttpResponseRedirect('/login/')
 
 
-		else:	
+		else:
+
+			try:
+				social_auth = User_social_auths.objects.get(username=request.user.username)
+				userProfile_obj.fb_id = social_auth.uid
+				userProfile_obj.fb_pic = "http://graph.facebook.com/" + social_auth.uid + "/picture"
+				userProfile_obj.save()
+			except:
+				pass
+
 			owns1 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=False).order_by('-date_set')
 			owns2 = Ownership.objects.filter(userProfile=userProfile_obj).filter(completed=True).order_by('-date_done')
 			owns = itertools.chain(owns1, owns2)
