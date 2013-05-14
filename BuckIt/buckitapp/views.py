@@ -101,7 +101,7 @@ def home(request):
 				return HttpResponseRedirect('')
 			
 			elif 'facebookid' in request.POST:			
-				userProfile_obj.fb_id = request.user.social_auth.filter(provider='facebook')[0]
+				userProfile_obj.fb_id = request.user.social_auth.uid
 				#userProfile_obj.fb_pic = request.user.get_profile()
 				#fb_friends = request.POST['facebookfriends'].split(',')
 				#fb_friends.pop()
