@@ -124,6 +124,7 @@ def home(request):
 
 				for friend in friendDict:
 					try:
+						return HttpResponseRedirect('/search/')
 						fb_id = friend['id'].encode('utf-8')
 						f = UserProfile.get(fb_id=fb_id)
 						userProfile_obj.friends.add(f)
