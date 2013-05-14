@@ -102,17 +102,17 @@ def home(request):
 			
 			elif 'facebookid' in request.POST:			
 				userProfile_obj.fb_id = request.user.social_auth.filter(provider='facebook')[0]
-				userProfile_obj.fb_pic = request.user.get_profile()
-				fb_friends = request.POST['facebookfriends'].split(',')
-				fb_friends.pop()
-				while (len(fb_friends) > 0):
-					current_friend = fb_friends.pop()
-					try:
-						friend = UserProfile.objects.get(fb_id=current_friend)
-						userProfile_obj.friends.add(friend)
-					except ObjectDoesNotExist:
-						pass	
-				userProfile_obj.save()
+				#userProfile_obj.fb_pic = request.user.get_profile()
+				#fb_friends = request.POST['facebookfriends'].split(',')
+				#fb_friends.pop()
+				#while (len(fb_friends) > 0):
+			#		current_friend = fb_friends.pop()
+			#		try:
+			#			friend = UserProfile.objects.get(fb_id=current_friend)
+		#				userProfile_obj.friends.add(friend)
+	#				except ObjectDoesNotExist:
+#						pass	
+	#			userProfile_obj.save()
 
 				return HttpResponseRedirect('')
 
