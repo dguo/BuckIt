@@ -112,22 +112,19 @@ def home(request):
 
 			try:
 
-				graph = facebook.GraphAPI(social_auth.extra_data['access_token'])
-				user = graph.get_object("me")
-				friends = graph.get_connections(user["id"], "friends")
-
 				social_auth = request.user.social_auth.get(provider='facebook')
 				userProfile_obj.fb_id = social_auth.uid
-				userProfile_obj.fb_pic = "http://graph.facebook.com/" + user["id"] + "/picture"
+				userProfile_obj.fb_pic = "http://graph.facebook.com/" + social_auth.uid + "/picture"
 				
 
 				friendsurl = "https://graph.facebook.com/" + social_auth.uid + "/friends?access_token=" + social_auth.extra_data['access_token']
 				friendJson = urllib2.urlopen(friendsurl)
-				friendDict = json.load(friendJson)
-				
+				friendJS = json.load(friendJson)
+				friendDict = friendJS['data']
+
 				for friend in friendDict:
 					try:
-						f = UserProfile.get(fb_id=friendDict[friend])
+						f = UserProfile.get(fb_id=friend['id'])
 						userProfile_obj.friends.add(f)
 					except:
 						pass
