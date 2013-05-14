@@ -142,12 +142,11 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL = '/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
-SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = '/'
+SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = '/home/'
 
 SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
 SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
 
-SOCIAL_AUTH_EXTRA_DATA = False
 SOCIAL_AUTH_CREATE_USERS = False
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -163,8 +162,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.social_auth_user',
+    'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',
-    'social_auth.backends.pipeline.user.update_user_details'
+    'social_auth.backends.pipeline.user.update_user_details',
 )
 
 # A sample logging configuration. The only tangible logging
