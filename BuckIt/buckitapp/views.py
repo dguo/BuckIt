@@ -122,7 +122,6 @@ def home(request):
 				friendJS = json.load(friendJson)
 				friendDict = friendJS['data']
 
-				userProfile_obj.friends.clear()
 				for friend in friendDict:
 					try:
 						fb_id = friend['id'].encode('utf-8')
