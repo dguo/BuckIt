@@ -124,7 +124,8 @@ def home(request):
 
 				for friend in friendDict:
 					try:
-						f = UserProfile.get(fb_id=friend['id'])
+						fb_id = friend['id'].encode('utf-8')
+						f = UserProfile.get(fb_id=fb_id)
 						userProfile_obj.friends.add(f)
 					except:
 						pass
